@@ -109,6 +109,7 @@ class StockScreener:
             for filter_func in self.filters:
                 if not filter_func(stock):
                     passed_all_filters = False
+                    print(passed_all_filters)
                     break
             if passed_all_filters:
                 filtered_stocks.append(stock)
