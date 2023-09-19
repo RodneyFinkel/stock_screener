@@ -140,16 +140,16 @@ class StockScreener:
             value = float(value)
 
         # Check condition according to operator
-        # if operator == '>':
-        #     return float(stock.data[metric]) > value
-        # elif operator == '>=':
-        #     return float(stock.data[metric]) >= value
-        # elif operator == '<':
-        #     return float(stock.data[metric]) < value
-        # elif operator == '<=':
-        #     return float(stock.data[metric]) <= value
-        # elif operator == '==':
-        #     return float(stock.data[metric]) == value
+        if operator == '>':
+            return float(stock.data[metric]) > value
+        elif operator == '>=':
+            return float(stock.data[metric]) >= value
+        elif operator == '<':
+            return float(stock.data[metric]) < value
+        elif operator == '<=':
+            return float(stock.data[metric]) <= value
+        elif operator == '==':
+            return float(stock.data[metric]) == value
         # else:
         
         

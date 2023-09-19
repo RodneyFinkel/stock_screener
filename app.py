@@ -13,13 +13,14 @@ rows = table.find_all('tr')[1:]  # skip the header row
 
 sp500 = []
 
+
 for row in rows:
     cells = row.find_all('td')
     ticker = cells[0].text.strip()
     company = cells[1].text.strip()
     sector = cells[3].text.strip()
     sp500.append({'ticker': ticker, 'company': company, 'sector': sector})
-    # print(sp500)
+    pprint(sp500)
     
     
 def get_sp500_stocks():
@@ -38,9 +39,9 @@ def get_sp500_stocks():
 # filtered_stocks = screener.apply_filters()
 
 # Run screener for all sp500 tickers
-filters = [lambda stock: StockScreener.filter_sector(stock, 'Asset Management & Custody Banks'),
+filters = [lambda stock: StockScreener.filter_sector(stock, 'Interactive Media & Services'),
            lambda stock: StockScreener.filter_price(stock, 50, 200),
-           lambda stock: StockScreener.filter_metric(stock, 'profit_margin', '>', 10)]
+           lambda stock: StockScreener.filter_metric(stock, 'profit_margin', '>', 5)]
 
 sp500_stocks = [Stock('NKLA', 'Interactive Media & Services'), Stock('GOOGL', 'Interactive Media & Services'), Stock('TWLO', 'Interactive Media & Services'), Stock('META', 'Interactive Media & Services' )]
 # sp500_stocks = get_sp500_stocks()
