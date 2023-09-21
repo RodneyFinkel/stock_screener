@@ -228,13 +228,13 @@ class StockScreener:
         # else:
         
    # Train deep learning models on selected stocks
-   def train_models(self):
-       # Get data for training and testing
-       filtered_stocks = self.apply_filters
+    def train_models(self):
+        # Get data for training and testing
+        filtered_stocks = self.apply_filters
        
-       for stock in filtered_stocks:
-           train_data = stock.technical_indicators
-           train_labels = stock.label
+        for stock in filtered_stocks:
+            train_data = stock.technical_indicators
+            train_labels = stock.label
            
             # Normalize the Data
             train_data = self.scaler.fit_transform(train_data)
