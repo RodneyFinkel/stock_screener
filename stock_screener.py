@@ -157,6 +157,10 @@ class Stock:
         
         # store technical indicators in stock data dictionary
         self.data.update(prices[['Date', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].to_dict('list'))
+
+
+
+
         
 # Stocks Screener Class
 class StockScreener:
@@ -170,7 +174,7 @@ class StockScreener:
             stock.scrape_data()
             stock.get_stock_price()
             stock.get_historical()
-            stock.add_technical_indicators()
+            stock.add_technical_indicators() 
 
     # Select stocks that pass all filters
     def apply_filters(self):
