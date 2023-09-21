@@ -145,6 +145,17 @@ class Stock:
         train_data_aux = prices[['Close', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].dropna()
         self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1)
         
+        # Set label as profit loss of 10 day future price from actual price
+        labels_aux = train_data_aux['Close'].shift(-10) > train_data_aux['Close'].astype(int)
+        self.label = label_aux[:-10]
+        
+        # Today features for predicition
+        self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].iloc[-1,:]
+        
+        prices = price.reset_index()
+        
+        # store technical indicators in stock data dictionary
+        self.data.update(prices[['Date', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].to_dict('list'))
         
 # Stocks Screener Class
 class StockScreener:
