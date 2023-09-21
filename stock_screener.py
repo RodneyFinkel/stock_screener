@@ -187,7 +187,7 @@ class StockScreener:
                     print(passed_all_filters)
                     break
             if passed_all_filters:
-                filtered_stocks.append(repr(stock))  #repr doesnt seem to be working correctly
+                filtered_stocks.append(repr(stock))  
         print('Filtered_stocks:', filtered_stocks)
         return filtered_stocks
     
@@ -227,4 +227,20 @@ class StockScreener:
             return float(stock.data[metric]) == value
         # else:
         
-        
+   # Train deep learning models on selected stocks
+   def train_models(self):
+       # Get data for training and testing
+       filtered_stocks = self.apply_filters
+       
+       for stock in filtered_stocks:
+           train_data = stock.technical_indicators
+           train_labels = stock.label
+           
+            # Normalize the Data
+            train_data = self.scaler.fit_transform(train_data)
+            train_labels = np.array(train_labels)
+            
+            #Create and train model
+            model = create_model(train_data)
+            model.fit(train_data, train_labels, epochs=10)
+            self.models[stock.ticker] = model
