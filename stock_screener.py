@@ -57,7 +57,8 @@ class Stock:
             'Levered Free Cash Flow (ttm)': 'levered_free_cash_flow'
         }
         
-             
+    def __repr__(self):
+        return f"Stock: ticker={self.ticker}, sector={self.sector}, price={self.price})"     
         
     # Scrape statistics
     def scrape_data(self):
@@ -180,7 +181,7 @@ class StockScreener:
                     print(passed_all_filters)
                     break
             if passed_all_filters:
-                filtered_stocks.append(stock)
+                filtered_stocks.append(repr(stock))  #repr doesnt seem to be working correctly
         print('Filtered_stocks:', filtered_stocks)
         return filtered_stocks
     
