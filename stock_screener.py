@@ -1,5 +1,9 @@
 from bs4 import BeautifulSoup
 import requests
+import pandas as pandas
+import numpy as np 
+import yfinance as yf 
+from sklearn.preprocessing import StandardScaler 
 from pprint import pprint
 
 # Stock Class
@@ -9,7 +13,14 @@ class Stock:
         self.sector = sector
         self.price = 0.0
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
-        self.data = {}
+        self.data2 = pd.Dataframe()
+        # Deep Learning Attributes
+        self.technical_indicators = pd.Dataframe()
+        self.today_technical_indicators = pd.Dataframe()
+        self.labels = pd.Dataframe()
+        self.prediction = 0.0       
+        # Metrics
+        self.data = {}   # self.metrics = {}
         # Metric aliases pairs
         self.metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
@@ -46,6 +57,7 @@ class Stock:
             'Levered Free Cash Flow (ttm)': 'levered_free_cash_flow'
         }
         
+             
         
     # Scrape statistics
     def scrape_data(self):
@@ -86,7 +98,52 @@ class Stock:
         
         except:
             print(f'Price not available for {self.ticker}')
-            self.price = 0.0     
+            self.price = 0.0  
+            
+    
+    def get_historical(self):
+        stock = yf.Ticker(self.ticker)
+        history = stock.history(start='2010-01-01', end='2023-06-29') 
+        self.data2 = history  
+        
+    
+    def add_technical_indicators(self):
+        # get historical stock prices
+        prices = self.data2 
+        if len(prices) < 20:
+            return
+        
+        # calculate 20-day moving average
+        prices['MA20'] = prices['Close'].rolling(window=20).mean()
+        
+        # calculate 50-day moving average
+        prices['MA50'] = prices['Close'].rolling(window=50).mean()
+        
+        # calculate relative strength index (RSI)
+        delta = prices['Close'].diff()
+        gain = delta.where(delta > 0, 0)
+        loss = -delta.where(delta < 0, 0)
+        avg_gain = gain.rolling(window=14).mean()
+        avg_loss = loss.rolling(wiondow=14).mean()
+        rs = avg_gain/avg_loss
+        prices['RSI'] = 100 - (100/(1 + rs))
+        
+        # calculating moving average convergence divergence (MACD)
+        exp1 = prices['Close'].ewm(span=12, adjust=False).mean()
+        exp2 = prices['Close'].ewm(span=26, adjust=False).mean()
+        macd = exp1 - exp2
+        signal = macd.ewm(span=9, adjust=False).mean()
+        prices['MACD'] = macd - signal
+        
+        # calculate Bollinger Bands
+        prices['MA20'] = prices['Close'].rolling(window=20).mean()
+        prices['20STD'] = prices['Close'].rolling(window=20).std()
+        prices['UpperBand'] = prices['MA20'] + (prices['20STD'] * 2)
+        prices['LowerBand'] = prices['MA20'] - (prices['20STD'] * 2)
+        
+        # Features for deep learning model
+        train_data_aux = prices[['Close', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].dropna()
+        self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1)
         
         
 # Stocks Screener Class
