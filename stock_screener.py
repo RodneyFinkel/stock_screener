@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
-import pandas as pandas
+import pandas as pd
 import numpy as np 
 import yfinance as yf 
 from sklearn.preprocessing import StandardScaler 
