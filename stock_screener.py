@@ -125,7 +125,7 @@ class Stock:
         gain = delta.where(delta > 0, 0)
         loss = -delta.where(delta < 0, 0)
         avg_gain = gain.rolling(window=14).mean()
-        avg_loss = loss.rolling(wiondow=14).mean()
+        avg_loss = loss.rolling(window=14).mean()
         rs = avg_gain/avg_loss
         prices['RSI'] = 100 - (100/(1 + rs))
         
@@ -148,12 +148,12 @@ class Stock:
         
         # Set label as profit loss of 10 day future price from actual price
         labels_aux = train_data_aux['Close'].shift(-10) > train_data_aux['Close'].astype(int)
-        self.label = label_aux[:-10]
+        self.label = labels_aux[:-10]
         
         # Today features for predicition
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].iloc[-1,:]
         
-        prices = price.reset_index()
+        prices = prices.reset_index()
         
         # store technical indicators in stock data dictionary
         self.data.update(prices[['Date', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].to_dict('list'))
@@ -169,6 +169,8 @@ class StockScreener:
         for stock in self.stocks:
             stock.scrape_data()
             stock.get_stock_price()
+            stock.get_historical()
+            stock.add_technical_indicators()
 
     # Select stocks that pass all filters
     def apply_filters(self):
