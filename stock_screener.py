@@ -13,11 +13,11 @@ class Stock:
         self.sector = sector
         self.price = 0.0
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
-        self.data2 = pd.Dataframe()
+        self.data2 = pd.DataFrame()
         # Deep Learning Attributes
-        self.technical_indicators = pd.Dataframe()
-        self.today_technical_indicators = pd.Dataframe()
-        self.labels = pd.Dataframe()
+        self.technical_indicators = pd.DataFrame()
+        self.today_technical_indicators = pd.DataFrame()
+        self.labels = pd.DataFrame()
         self.prediction = 0.0       
         # Metrics
         self.data = {}   # self.metrics = {}
