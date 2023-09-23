@@ -237,7 +237,7 @@ class StockScreener:
         
         # Check if the value is 'price'
         if value == 'price':
-            value = float(stock_price)
+            value = float(stock.price)
         else:
             value = float(value)
             
@@ -259,7 +259,7 @@ class StockScreener:
    # Train deep learning models on selected stocks
     def train_models(self):
         # Get data for training and testing
-        filtered_stocks = self.apply_filters
+        filtered_stocks = self.apply_filters()
        
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
@@ -270,7 +270,7 @@ class StockScreener:
             train_labels = np.array(train_labels)
             
             #Create and train model
-            model = create_model(train_data) # def create_model(train_data): (THIS function will be defined later)
+            model = create_model(train_data) # def create_model(train_data): (THIS function is be defined lower)
             model.fit(train_data, train_labels, epochs=10)
             self.models[stock.ticker] = model # models is defined later
             
