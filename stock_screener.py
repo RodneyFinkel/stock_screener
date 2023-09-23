@@ -5,6 +5,7 @@ import numpy as np
 import yfinance as yf 
 from sklearn.preprocessing import StandardScaler 
 from pprint import pprint
+import tensorflow as tf
 
 # Stock Class
 class Stock:
@@ -197,7 +198,7 @@ class StockScreener:
     def filter_price(stock, min_price, max_price):
         return min_price <= stock.price <= max_price
     
-    def filter_metric(stock, metric, operator, value):
+    def filter_metric(stock, metric, operator, value):  
         if metric not in stock.data:
             return False
 
@@ -227,6 +228,34 @@ class StockScreener:
             return float(stock.data[metric]) == value
         # else:
         
+    def filter_technical_indicators(stock, indicator_name, operator, value):
+        if indicator_name not in stock.today_technical_indicators:
+            return False
+        
+        # Obtain the value of the technical indicator
+        indicator_value = stock.today_technical_indicators[indicator_name]
+        
+        # Check if the value is 'price'
+        if value == 'price':
+            value = float(stock_price)
+        else:
+            value = float(value)
+            
+        # Compare according to operator
+        if operator == '>':
+            return float(indicator_value) > value
+        elif opertor == '>=':
+            return float(indicator_value) >= value
+        elif operator == '<':
+            return float(indicator_value) < value
+        elif operator == '<=':
+            return float(indicator_value) <= value
+        elif operator == '==':
+            return float(indicator_value) == value
+        else:
+            return False
+            
+        
    # Train deep learning models on selected stocks
     def train_models(self):
         # Get data for training and testing
@@ -241,6 +270,53 @@ class StockScreener:
             train_labels = np.array(train_labels)
             
             #Create and train model
-            model = create_model(train_data)
+            model = create_model(train_data) # def create_model(train_data): (THIS function will be defined later)
             model.fit(train_data, train_labels, epochs=10)
-            self.models[stock.ticker] = model
+            self.models[stock.ticker] = model # models is defined later
+            
+    # Predict whether new stocks will pass filters (where does new_stocks come from?)
+    def predict_stocks(self, new_stocks):
+        # Add technical indicators to new stocks
+        for stock in new_stocks:
+            stock.get_historical()
+            stock.add_technical_indicators()
+            
+        
+        # Make predictions for each stock using its corresponding model
+        predicted_stocks = []
+        for stock in new_stocks:
+            if stock.ticker in self.models:
+                model = self.models[stock.ticker]
+                # Reshape as there is only one sample
+                new_feature_aux = np.array(stock.today_technical_indicators).reshape(1,-1)
+                new_stock_data = self.scaler.fit_transform(new_features_aux)
+                prediction = model.predict(new_stock_data)
+                stock.prediction = prediction
+                if predicition > 0.5:
+                    predicted_stocks.append(stock)
+                    
+        return predicted_stocks
+    
+    
+    # Simple Dense Model
+    def create_model(train_data):
+        # Creating a sequential model (neural network suitable for binary classification tasks)
+        model = tf.keras.models.Sequential([
+            tf.keras.layers.Dense(64, input_shape=(train_data.shape[1],), activation='relu'),
+            tf.keras.layers.Dense(32, activation='relu'),
+            tf.keras.layers.Dense(1, activation='sigmoid')
+            
+        ])
+        model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+        return model
+    
+    
+    
+    
+                
+                
+                          
+            
+            
+            
+             
