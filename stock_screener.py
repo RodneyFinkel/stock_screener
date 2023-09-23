@@ -14,14 +14,14 @@ class Stock:
         self.sector = sector
         self.price = 0.0
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
-        self.data2 = pd.DataFrame()
+        self.data = pd.DataFrame()#self.data2
         # Deep Learning Attributes
         self.technical_indicators = pd.DataFrame()
         self.today_technical_indicators = pd.DataFrame()
         self.labels = pd.DataFrame()
         self.prediction = 0.0       
         # Metrics
-        self.data = {}   # self.metrics = {}
+        self.metrics = {}   # self.data = {}
         # Metric aliases pairs
         self.metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
@@ -106,12 +106,13 @@ class Stock:
     def get_historical(self):
         stock = yf.Ticker(self.ticker)
         history = stock.history(start='2010-01-01', end='2023-06-29') 
-        self.data2 = history  
+        self.data = history
+        
         
     
     def add_technical_indicators(self):
         # get historical stock prices
-        prices = self.data2 
+        prices = self.data 
         if len(prices) < 20:
             return
         
@@ -294,7 +295,7 @@ class StockScreener:
                 stock.prediction = prediction
                 if predicition > 0.5:
                     predicted_stocks.append(stock)
-                    
+        print('Predicted_Stocks:',predicted_stocks)           
         return predicted_stocks
     
     
