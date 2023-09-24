@@ -25,3 +25,8 @@ def get_stock_price2(ticker):
 if __name__ == "__main__":
     ticker = 'BABA'
     get_stock_price2(ticker)
+    
+    
+    
+    
+    

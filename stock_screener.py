@@ -14,14 +14,14 @@ class Stock:
         self.sector = sector
         self.price = 0.0
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
-        self.data = pd.DataFrame()#self.data2
+        self.data = pd.DataFrame() #self.data2
         # Deep Learning Attributes
         self.technical_indicators = pd.DataFrame()
         self.today_technical_indicators = pd.DataFrame()
         self.labels = pd.DataFrame()
         self.prediction = 0.0       
         # Metrics
-        self.metrics = {}   # self.data = {}
+        self.metrics = {} # self.data = {} 
         # Metric aliases pairs
         self.metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
@@ -105,7 +105,7 @@ class Stock:
     
     def get_historical(self):
         stock = yf.Ticker(self.ticker)
-        history = stock.history(start='2010-01-01', end='2023-06-29') 
+        history = stock.history(start='2010-01-01', end='2023-09-24') 
         self.data = history
         
         
@@ -150,7 +150,7 @@ class Stock:
         
         # Set label as profit loss of 10 day future price from actual price
         labels_aux = train_data_aux['Close'].shift(-10) > train_data_aux['Close'].astype(int)
-        self.label = labels_aux[:-10]
+        self.labels = labels_aux[:-10]
         
         # Today features for predicition
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].iloc[-1,:]
@@ -171,6 +171,7 @@ class StockScreener:
     def __init__(self, stocks, filters):
         self.stocks = stocks
         self.filters = filters
+        self.scaler = StandardScaler()
 
     # Add data to stocks 
     def add_data(self):
@@ -178,7 +179,8 @@ class StockScreener:
             stock.scrape_data()
             stock.get_stock_price()
             stock.get_historical()
-            stock.add_technical_indicators() 
+            stock.add_technical_indicators()
+            print(stock) 
 
     # Select stocks that pass all filters
     def apply_filters(self):
@@ -186,6 +188,7 @@ class StockScreener:
         for stock in self.stocks:
             passed_all_filters = True
             for filter_func in self.filters:
+                print(filter_func)
                 if not filter_func(stock):
                     passed_all_filters = False
                     print(passed_all_filters)
@@ -196,8 +199,8 @@ class StockScreener:
         return filtered_stocks
     
     def filter_sector(stock, sector):
-        #return stock.sector == sector
-        pass 
+        return stock.sector == sector
+        
     
     def filter_price(stock, min_price, max_price):
         return min_price <= stock.price <= max_price
@@ -233,6 +236,7 @@ class StockScreener:
         # else:
         
     def filter_technical_indicators(stock, indicator_name, operator, value):
+        print(stock.today_technical_indicators)
         if indicator_name not in stock.today_technical_indicators:
             return False
         
@@ -267,7 +271,10 @@ class StockScreener:
        
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
-            train_labels = stock.label
+            train_labels = stock.labels
+            print('debug:', train_data)
+            # Ensure train_data is a 2D array
+            train_data = np.array(train_data).reshape(-1, 1)
            
             # Normalize the Data
             train_data = self.scaler.fit_transform(train_data)
@@ -278,7 +285,7 @@ class StockScreener:
             model.fit(train_data, train_labels, epochs=10)
             self.models[stock.ticker] = model # models is defined later
             
-    # Predict whether new stocks will pass filters (where does new_stocks come from?)
+    # Predict whether new stocks will pass filters (new_stocks gets passed as filtered_stocks in app.py)
     def predict_stocks(self, new_stocks):
         # Add technical indicators to new stocks
         for stock in new_stocks:
@@ -318,7 +325,7 @@ class StockScreener:
     
     
                 
-                
+            
                           
             
             
