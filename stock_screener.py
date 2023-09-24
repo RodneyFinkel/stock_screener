@@ -159,6 +159,8 @@ class Stock:
         
         # store technical indicators in stock data dictionary
         self.data.update(prices[['Date', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].to_dict('list'))
+        data2 = self.data
+        pprint(data2)
 
 
 
@@ -189,12 +191,13 @@ class StockScreener:
                     print(passed_all_filters)
                     break
             if passed_all_filters:
-                filtered_stocks.append(repr(stock))  
+                filtered_stocks.append(stock)  
         print('Filtered_stocks:', filtered_stocks)
         return filtered_stocks
     
     def filter_sector(stock, sector):
-        return stock.sector == sector
+        #return stock.sector == sector
+        pass 
     
     def filter_price(stock, min_price, max_price):
         return min_price <= stock.price <= max_price
