@@ -40,13 +40,13 @@ def get_sp500_stocks():
 
 # Run screener for all sp500 tickers
 filters = [lambda stock: StockScreener.filter_sector(stock, 'Interactive Media & Services'),
-           lambda stock: StockScreener.filter_price(stock, 50, 300),
+           lambda stock: StockScreener.filter_price(stock, 40, 300),
            lambda stock: StockScreener.filter_metric(stock, 'profit_margin', '>', 5),
            lambda stock: StockScreener.filter_technical_indicators(stock, 'UpperBand', '>', 'price'),
            lambda stock: StockScreener.filter_technical_indicators(stock, 'LowerBand', '<', 'price')          
     ]
 
-sp500_stocks = [Stock('GOOG', 'Interactive Media & Services'), Stock('GOOGL', 'Interactive Media & Services'), Stock('TSLA', 'Automobile Manufacturers'), Stock('META', 'Interactive Media & Services' )]
+sp500_stocks = [Stock('GOOG', 'Interactive Media & Services'), Stock('GOOGL', 'Interactive Media & Services'), Stock('MTCH', 'Interactive Media & Services'), Stock('META', 'Interactive Media & Services' )]
 #sp500_stocks = get_sp500_stocks()
 screener = StockScreener(sp500_stocks, filters)
 # Add Data

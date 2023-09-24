@@ -95,7 +95,7 @@ class Stock:
             data = soup.find('fin-streamer', {'data-symbol': self.ticker})
             # pprint(data)
             price = float(data['value'])
-            print(price)
+            print('Stock_price', price)
             self.price = price
         
         except:
