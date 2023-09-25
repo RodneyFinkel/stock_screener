@@ -284,7 +284,7 @@ class StockScreener:
             
             #Create and train model
             model = create_model(train_data) 
-            model.fit(train_data, train_labels, epochs=10)
+            model.fit(train_data, train_labels, epochs=20)
             self.models[stock.ticker] = model # models needs to be defined as a StockScreener attribute, namely a dictionary
             
     # Predict whether new stocks will pass filters (new_stocks gets passed as filtered_stocks in app.py)

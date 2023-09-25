@@ -19,7 +19,7 @@ for row in rows:
     company = cells[1].text.strip()
     sector = cells[3].text.strip()
     sp500.append({'ticker': ticker, 'company': company, 'sector': sector})
-    pprint(sp500)
+    
     
     
 def get_sp500_stocks():
