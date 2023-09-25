@@ -1,7 +1,6 @@
 from stock_screener import Stock, StockScreener
 import requests
 from bs4 import BeautifulSoup
-from pprint import pprint
 
 # Get sp500 ticker and sector
 url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
@@ -41,7 +40,7 @@ def get_sp500_stocks():
 # Run screener for all sp500 tickers
 filters = [lambda stock: StockScreener.filter_sector(stock, 'Interactive Media & Services'),
            lambda stock: StockScreener.filter_price(stock, 40, 300),
-           lambda stock: StockScreener.filter_metric(stock, 'profit_margin', '>', 5),
+        #    lambda stock: StockScreener.filter_metric(stock, 'profit_margin', '>', 5),
            lambda stock: StockScreener.filter_technical_indicators(stock, 'UpperBand', '>', 'price'),
            lambda stock: StockScreener.filter_technical_indicators(stock, 'LowerBand', '<', 'price')          
     ]
@@ -54,6 +53,6 @@ screener.add_data()
 # Apply Filters
 filtered_stocks = screener.apply_filters()
 # Train Model
-#screener.train_models()
+screener.train_models()
 # Make Predictions
-#predicted_stocks = screener.predict_stocks(filtered_stocks)
+predicted_stocks = screener.predict_stocks(filtered_stocks)

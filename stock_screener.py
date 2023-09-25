@@ -172,6 +172,8 @@ class StockScreener:
         self.stocks = stocks
         self.filters = filters
         self.scaler = StandardScaler()
+        self.models = {}
+        
 
     # Add data to stocks 
     def add_data(self):
@@ -252,7 +254,7 @@ class StockScreener:
         # Compare according to operator
         if operator == '>':
             return float(indicator_value) > value
-        elif opertor == '>=':
+        elif operator == '>=':
             return float(indicator_value) >= value
         elif operator == '<':
             return float(indicator_value) < value
@@ -272,18 +274,18 @@ class StockScreener:
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
             train_labels = stock.labels
-            print('debug:', train_data)
+            
             # Ensure train_data is a 2D array
-            train_data = np.array(train_data).reshape(-1, 1)
-           
+            # train_data = np.array(train_data).reshape(-1, 1)
+            
             # Normalize the Data
             train_data = self.scaler.fit_transform(train_data)
             train_labels = np.array(train_labels)
             
             #Create and train model
-            model = create_model(train_data) # def create_model(train_data): (THIS function is be defined lower)
+            model = create_model(train_data) 
             model.fit(train_data, train_labels, epochs=10)
-            self.models[stock.ticker] = model # models is defined later
+            self.models[stock.ticker] = model # models needs to be defined as a StockScreener attribute, namely a dictionary
             
     # Predict whether new stocks will pass filters (new_stocks gets passed as filtered_stocks in app.py)
     def predict_stocks(self, new_stocks):
@@ -295,22 +297,25 @@ class StockScreener:
         
         # Make predictions for each stock using its corresponding model
         predicted_stocks = []
+        stock_instance_predictions = []
         for stock in new_stocks:
             if stock.ticker in self.models:
                 model = self.models[stock.ticker]
                 # Reshape as there is only one sample
                 new_feature_aux = np.array(stock.today_technical_indicators).reshape(1,-1)
-                new_stock_data = self.scaler.fit_transform(new_features_aux)
+                new_stock_data = self.scaler.fit_transform(new_feature_aux)
                 prediction = model.predict(new_stock_data)
                 stock.prediction = prediction
-                if predicition > 0.5:
+                print('Predictions', prediction)
+                if prediction > 0.5:
                     predicted_stocks.append(stock)
-        print('Predicted_Stocks:',predicted_stocks)           
+                    stock_instance_predictions.append(prediction)
+        print('Predicted_Stocks:', predicted_stocks, 'Stock_Instance_Predictions', stock_instance_predictions)           
         return predicted_stocks
     
-    
-    # Simple Dense Model
-    def create_model(train_data):
+# The create_model() function needs to be defined outside the StockScreener Class to be in scope  
+# Simple Dense Model
+def create_model(train_data):
         # Creating a sequential model (neural network suitable for binary classification tasks)
         model = tf.keras.models.Sequential([
             tf.keras.layers.Dense(64, input_shape=(train_data.shape[1],), activation='relu'),
@@ -319,7 +324,7 @@ class StockScreener:
             
         ])
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        return model
+        return model    
     
     
     
