@@ -163,8 +163,6 @@ class Stock:
         pprint(data2)
 
 
-
-
         
 # Stocks Screener Class
 class StockScreener:

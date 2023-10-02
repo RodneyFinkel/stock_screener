@@ -11,17 +11,21 @@ class Stock:
         self.ticker = ticker
         self.sector = sector
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
-        # add data
+        # Add Data
         self.price = price
-        self.data = data #self.data2
+        self.data = data 
         # Deep Learning Attributes
         train_data_aux, prices = add_technical_indicators(self.data)
         self.technical_indicators = train_aux_data.iloc[:-10, :].drop('Close', axis=1) # excluding the last 10 days of data and dropping close prices
-        # set label as profit loss of 10 day future price from actual price
+        # labels for training predictive models
+        # collect labels as true or false for each stock by labelling those whose price, 10 days ahead of a current date, is higher as True. 
+        # this is accomplished by shifting prices by 10 for each current date. The last 10 rows of labels_aux are ommited
+        # These labels indicate whether there would be a profit (True) or a loss (False) 
+        # in the next 10 days for each day in the dataset, excluding the last 10 days.
         labels_aux = (train_data_aux['Close'].shift(-10)) > train_data_aux['Close'].astype(int)
         self.labels = labels_aux[:-10]
         
-        # Today features for prediction
+        # Today's features for prediction
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
         self.labels = pd.DataFrame()
         self.prediction = 0.0       
@@ -64,61 +68,142 @@ class Stock:
         }
         self.metrics = scrape_data(self.url, self.metric_aliases)
         
-    def __repr__(self):
-        return f"Stock: ticker={self.ticker}, sector={self.sector}, price={self.price})"     
-        
-    # Scrape statistics
-    def scrape_data(self):
-        page = requests.get(self.url, headers=self.get_headers())
-        soup = BeautifulSoup(page.content, 'html.parser')
-        
-        data = {}
-        
-        sections = soup.find_all('section', {'data-test': 'qsp-statistics'})
-        for section in sections:
-            rows = section.find_all('tr')
-            for row in rows:
-                cols = row.find_all('td')
-                if len(cols) == 2:
-                    metric = cols[0].text.strip()
-                    if metric in self.metric_aliases:
-                        data[self.metric_aliases[metric]] = cols[1].text.strip()
-        
-        self.data = data
-        pprint(data)
+### Utils Functions ###  
+    
+def get_headers(self):
+    return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
 
-    def get_headers(self):
-        return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
+def filter_sector(stock, sector):
+        return stock.sector == sector
+           
+def filter_price(stock, min_price, max_price):
+    return min_price <= stock.price <= max_price
+
+def filter_metric(stock, metric, operator, value):  
+    if metric not in stock.metrics:
+        print(f'{metric} not in stock metrics')
+        return False
+    
+    # Format metric value
+    metric_value = stock.metrics[metric]
+    metric_value = metric_value.replace(',', '.')
+    
+    # check if the value is 'price'
+    if value == 'price':
+        value = float(stock.price)
+    else:
+        value = float(value)
+
+    # Convert value to same units as metric, if necessary
+    if 'B' in metric_value:
+        metric = metric_value.replace('B', '')
+        value = float(value) / 1e9
+    elif 'M' in metic_value:
+        metric = metric_value.replace('M', '')
+        value = float(value) / 1e6
+    elif '%' in metric_value:
+        metric = metric_value.replace('%', '')
+        value = float(value)
+    else:
+        metric = metric_value
+        value = float(value)
+        
+    # Return false if metric_value is still not a valid float
+    try:
+        metric = float(metric)
+    except ValueError:
+        return False
+
+    # Check condition according to operator
+    if operator == '>':
+        return metric > value
+    elif operator == '>=':
+        return metric >= value
+    elif operator == '<':
+        return metric < value
+    elif operator == '<=':
+        return metric <= value
+    elif operator == '==':
+        return metric == value
+    else:
+        raise ValueError(f'Invalid operator: {operator}')
+    
+def filter_technical_indicators(stock, indicator_name, operator, value):
+    if indicator_name not in stock.today_technical_indicators:
+        return False
+    
+    # Obtain the value of the technical indicator
+    indicator_value = stock.today_technical_indicators[indicator_name]
+    
+    # Check if the value is 'price'
+    if value == 'price':
+        value = float(stock.price)
+    else:
+        value = float(value)
+        
+    # Compare according to operator
+    if operator == '>':
+        return float(indicator_value) > value
+    elif operator == '>=':
+        return float(indicator_value) >= value
+    elif operator == '<':
+        return float(indicator_value) < value
+    elif operator == '<=':
+        return float(indicator_value) <= value
+    elif operator == '==':
+        return float(indicator_value) == value
+    else:
+        raise ValueError(f'Invalid operator: {operator}')
+    
+               
+# Scrape statistics
+def scrape_data(url, metric_aliases):
+    page = requests.get(url, headers=get_headers())
+    soup = BeautifulSoup(page.content, 'html.parser')
+    
+    data = {}
+    
+    sections = soup.find_all('section', {'data-test': 'qsp-statistics'})
+    for section in sections:
+        rows = section.find_all('tr')
+        for row in rows:
+            cols = row.find_all('td')
+            if len(cols) == 2:
+                metric = cols[0].text.strip()
+                if metric in self.metric_aliases:
+                    data[self.metric_aliases[metric]] = cols[1].text.strip()
+    
+    return data
                 
-       
-    # Scrape price
-    def get_stock_price(self):
-        try:
-            url = f'https://finance.yahoo.com/quote/{self.ticker}'
-            response = requests.get(url, headers=self.get_headers())
-            # print(response)
-            soup = BeautifulSoup(response.content, 'html.parser')
-            data = soup.find('fin-streamer', {'data-symbol': self.ticker})
-            # pprint(data)
-            price = float(data['value'])
-            print('Stock_price', price)
-            self.price = price
+### CACHED FUNCTIONS ###
+    
+# Scrape price
+@st.cache_data
+def get_stock_price(ticker):
+    try:
+        url = f'https://finance.yahoo.com/quote/{ticker}'
+        response = requests.get(url, headers=get_headers())
+        soup = BeautifulSoup(response.content, 'html.parser')
+        data = soup.find('fin-streamer', {'data-symbol': ticker})
+        price = float(data['value'])
+        print('Stock_price', price)
+        return  price
+    
+    except:
+        print(f'Price not available for {ticker}')
+        self.price = 0.0  
+        return price
         
-        except:
-            print(f'Price not available for {self.ticker}')
-            self.price = 0.0  
+@st.cache_data
+def get_historical(ticker):
+    stock = yf.Ticker(ticker)
+    history = stock.history(start='2010-01-01', end='2023-09-24') 
+    return history
             
-    
-    def get_historical(self):
-        stock = yf.Ticker(self.ticker)
-        history = stock.history(start='2010-01-01', end='2023-09-24') 
-        self.data = history
-        
-        
-    
-    def add_technical_indicators(self):
+@st.cache_data
+def add_technical_indicators(data):
         # get historical stock prices
-        prices = self.data 
+        prices = data 
         if len(prices) < 20:
             return
         
@@ -152,18 +237,10 @@ class Stock:
         
         # Features for deep learning model
         train_data_aux = prices[['Close', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].dropna()
-        self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1)
         
-        # Set label as profit loss of 10 day future price from actual price
-        labels_aux = train_data_aux['Close'].shift(-10) > train_data_aux['Close'].astype(int)
-        self.labels = labels_aux[:-10]
+        return train_data_aux, prices
+       
         
-        # Today features for predicition
-        self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].iloc[-1,:]
         
-        prices = prices.reset_index()
         
-        # store technical indicators in stock data dictionary
-        self.data.update(prices[['Date', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].to_dict('list'))
-        data2 = self.data
-        pprint(data2)
+        

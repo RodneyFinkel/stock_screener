@@ -44,71 +44,7 @@ class StockScreener:
         print('Filtered_stocks:', filtered_stocks)
         return filtered_stocks
     
-    def filter_sector(stock, sector):
-        return stock.sector == sector
-        
-    
-    def filter_price(stock, min_price, max_price):
-        return min_price <= stock.price <= max_price
-    
-    def filter_metric(stock, metric, operator, value):  
-        if metric not in stock.data:
-            return False
-
-        # Convert value to same units as metric, if necessary
-        if 'B' in stock.data[metric]:
-            stock.data[metric] = stock.data[metric].replace('B', '')
-            value = float(value) / 1e9
-        elif 'M' in stock.data[metric]:
-            stock.data[metric] = stock.data[metric].replace('M', '')
-            value = float(value) / 1e6
-        elif '%' in stock.data[metric]:
-            stock.data[metric] = stock.data[metric].replace('%', '')
-            value = float(value)
-        else:
-            value = float(value)
-
-        # Check condition according to operator
-        if operator == '>':
-            return float(stock.data[metric]) > value
-        elif operator == '>=':
-            return float(stock.data[metric]) >= value
-        elif operator == '<':
-            return float(stock.data[metric]) < value
-        elif operator == '<=':
-            return float(stock.data[metric]) <= value
-        elif operator == '==':
-            return float(stock.data[metric]) == value
-        # else:
-        
-    def filter_technical_indicators(stock, indicator_name, operator, value):
-        print(stock.today_technical_indicators)
-        if indicator_name not in stock.today_technical_indicators:
-            return False
-        
-        # Obtain the value of the technical indicator
-        indicator_value = stock.today_technical_indicators[indicator_name]
-        
-        # Check if the value is 'price'
-        if value == 'price':
-            value = float(stock.price)
-        else:
-            value = float(value)
-            
-        # Compare according to operator
-        if operator == '>':
-            return float(indicator_value) > value
-        elif operator == '>=':
-            return float(indicator_value) >= value
-        elif operator == '<':
-            return float(indicator_value) < value
-        elif operator == '<=':
-            return float(indicator_value) <= value
-        elif operator == '==':
-            return float(indicator_value) == value
-        else:
-            return False
-            
+          
         
    # Train deep learning models on selected stocks
     def train_models(self):
