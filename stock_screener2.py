@@ -1,16 +1,15 @@
-from bs4 import BeautifulSoup
+from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicator, get_stock_price, get_historical)
 import requests
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np 
-import yfinance as yf 
 from sklearn.preprocessing import StandardScaler 
-from pprint import pprint
 import tensorflow as tf
 import streamlit as st
-
+from bs4 import BeautifulSoup
 
        
-# Stocks Screener Class
+# Stock Screener Class
 class StockScreener:
     def __init__(self, stocks, filters):
         self.stocks = stocks
@@ -18,30 +17,17 @@ class StockScreener:
         self.scaler = StandardScaler()
         self.models = {}
         
-
-    # Add data to stocks 
-    def add_data(self):
-        for stock in self.stocks:
-            stock.scrape_data()
-            stock.get_stock_price()
-            stock.get_historical()
-            stock.add_technical_indicators()
-            print(stock) 
-
     # Select stocks that pass all filters
     def apply_filters(self):
         filtered_stocks = []
         for stock in self.stocks:
             passed_all_filters = True
             for filter_func in self.filters:
-                print(filter_func)
                 if not filter_func(stock):
                     passed_all_filters = False
-                    print(passed_all_filters)
                     break
             if passed_all_filters:
                 filtered_stocks.append(stock)  
-        print('Filtered_stocks:', filtered_stocks)
         return filtered_stocks
     
           
