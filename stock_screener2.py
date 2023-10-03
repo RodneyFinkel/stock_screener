@@ -34,12 +34,16 @@ class StockScreener:
         
    # Train deep learning models on selected stocks
     def train_models(self):
+        training_models = st.empty()
+        training_models.write('Training Model for each Ticker...')
         # Get data for training and testing
         filtered_stocks = self.apply_filters()
        
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
             train_labels = stock.labels
+            if len(train_Data) == 0:
+                continue
             
             # Ensure train_data is a 2D array
             # train_data = np.array(train_data).reshape(-1, 1)
@@ -50,10 +54,14 @@ class StockScreener:
             
             #Create and train model
             model = create_model(train_data) 
-            model.fit(train_data, train_labels, epochs=20)
-            self.models[stock.ticker] = model # models needs to be defined as a StockScreener attribute, namely a dictionary
+            model.fit(train_data, train_labels, epochs=100)
+            self.models[stock.ticker] = model, history # models needs to be defined as a StockScreener attribute, namely a dictionary
             
-    # Predict whether new stocks will pass filters (new_stocks gets passed as filtered_stocks in app.py)
+        training_models.empty()
+        
+        return filtered_stocks
+            
+    # Predict whether new stocks will pass filters 
     def predict_stocks(self, new_stocks):
         # Add technical indicators to new stocks
         for stock in new_stocks:
@@ -63,21 +71,76 @@ class StockScreener:
         
         # Make predictions for each stock using its corresponding model
         predicted_stocks = []
-        stock_instance_predictions = []
         for stock in new_stocks:
             if stock.ticker in self.models:
-                model = self.models[stock.ticker]
+                model, _ = self.models[stock.ticker]
                 # Reshape as there is only one sample
                 new_feature_aux = np.array(stock.today_technical_indicators).reshape(1,-1)
-                new_stock_data = self.scaler.fit_transform(new_feature_aux)
+                new_stock_data = self.scaler.fit_transform(new_features_aux)
                 prediction = model.predict(new_stock_data)
                 stock.prediction = prediction
                 print('Predictions', prediction)
                 if prediction > 0.5:
                     predicted_stocks.append(stock)
-                    stock_instance_predictions.append(prediction)
-        print('Predicted_Stocks:', predicted_stocks, 'Stock_Instance_Predictions', stock_instance_predictions)           
+                  
         return predicted_stocks
+    
+    # Create web app for stock screener 
+    def create_app(self):
+        
+        st.title(':grey[STOCK SCREENER]')
+        
+        # Create sidebar for filtering options
+        sector_list = sorted(list(set(stock.sector for stock in self.stocks)))
+        selected_sector = st.sidebar.selectbox('Sector', ['All'] + sector_list)
+        
+        min_price = st.sidebar.number_input('Min Price', value=0.0, step=0.01)
+        max_price = st.sidebar.number_input('Max Price', value=1000000.0, step=0.01)
+        
+        metric_list = sorted(list(set(metric for stock in self.stocks for metric in stock.metrics)))
+        selected_metric = st.sidebar.selectbox('Metric', ['All'] +  metric_list)
+        
+        metric_operator_list = ['>', '>=', '<', '<=', '==']
+        selected_metric_operator = st.sidebar.selectbox('Metric Operator', metric_operator_list)
+        
+        metric_value = st.sidebar.text_input('Metric Value', 'Enter value of the word price')
+        try:
+            metric_value = float(metric_value)
+            print(metric_value)
+        except:
+            pass
+        
+        # update filter list with user inputs
+        new_filters = []
+        if selected_sector != 'All':
+            new_filters.append(lambda stock: filter_sector(stock, selected_sector))
+        if selected_metric != 'All':
+            new_filters.append(lambda stock: filter_metric(stock, selected_metric, selected_metric_operator, metric_value))
+        if selected_indicator != 'All':
+            new_filters.append(lambda stock: filter_technical_indicator(stock, selected_indicator, selected_indicator_operator, indicator_value))
+        new_filters.append(lambda stock: filter_price(stock, min_price, max_price))
+        self.filters = new_filters
+        
+        # Create 'Apply Filters' button
+        if st.sidebar.button('Apply Filters'):
+            
+            # Apply Filters
+            filtered_stocks = self.apply_filters()
+            
+            # Display Visualizations for filtered stocks
+            display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator)
+            
+        # Create 'Train and Predict Models' button
+        if st.sidebar.button('Train and Predict'):
+            # Train models for each filtered stock
+            filtered_stocks = self.train_models()
+            # Predict Models
+            predicted_stocks = self.predict_stocks(filtered_stocks)
+            
+            # Display visualizations for filtered stocks
+            display_filtered_stocks(predicted_stocks, selected_metric, selected_indicator, self.models)
+            
+
     
 # The create_model() function needs to be defined outside the StockScreener Class to be in scope  
 # Simple Dense Model
