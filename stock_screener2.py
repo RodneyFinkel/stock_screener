@@ -162,7 +162,61 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
         tabs = st.tabs(filtered_tickers)
         for n in range(len(tabs)):
             # Divide the metrics into 3 lists for the 3 columns
-            metrics = list(filtered_stocks[n].metric.items())    
+            # each item of filtered_stocks is an object of the stock class and metric is a class attribute so metric are accesible with .metric
+            metrics = list(filtered_stocks[n].metric.items())    # .items is a method that returns a view of the metrics as a list of tuples (key-value pairs)
+            num_metrics = len(metrics)
+            col1_metrics = metrics[:num_metrics//3]
+            col2_metrics = metrics[num_metrics//3:(2*num_metrics)//3]
+            col3_metrics = metrics[(2*num_metrics)//3:]
+            # Create 3 columns inside each tab
+            col1, col2, col3 = tabs[n].columns(3)
+            
+            # Display the metrics in 3 columns
+            for metric, value in col1_metrics:
+                col1.metric(metric, value)
+            for metric, value in col2_metrics:
+                col2.metric(metric, value)
+            for metric, value in col3_metrics:
+                col3.metric(metric, value)
+                
+            fig, ax = plt.subplots()
+            ax.plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
+            ax.set_title(f'{filtered_stocks[n].ticker} Close Price')
+            ax.set_xlabel('Date')
+            ax.set_ylabel('Price')
+            # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
+            tabs[n].pyplot(fig)
+            
+            try: 
+                model, history = models[filtered_stocks[n].ticker]
+                
+                fig, ax = plt.subplots(2, 1, figsize=(10, 8))
+                # Plot training loss
+                ax[0].plot(history.history['loss'])
+                ax[0].set_title(f"{filtered_stocks[n].ticker} Training Loss")
+                ax[0].set_ylabel("Loss")
+                
+                # Plot training accuracy
+                ax[1].plot(history.history['accuracy'])
+                ax[1].set_title(f"{filtered_stocks[n].ticker} Training Accuracy")
+                ax[1].set_xlabel("Epoch")
+                ax[1].set_ylabel("Accuracy")
+                
+                # Show the plot in the streamlit app
+                tabs[n].pyplot(fig)           
+         
+            except:
+                tabs[n].write("")
+                
+    # Display table of filtered stocks info
+    table_data = [[s.ticker, s.sector, s.price, s.metrics.get(selected_metric, "N/A"), s.today_technical_indicators.get(selected_indicator, "N/A"), float(s.prediction) if s.prediction != 0 else "N/A"] for s in filtered_stocks]
+    table_columns = ["Ticker", "Sector", "Price", f"Metric: {selected_metric}", f"Indicator: {selected_indicator}", "Prediction" if any(s.prediction != 0 for s in filtered_stocks) else ""]
+    st.write(pd.DataFrame(table_data, columns=table_columns))
+
+                
+                
+            
+            
     
     
     
