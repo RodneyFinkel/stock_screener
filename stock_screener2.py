@@ -92,7 +92,7 @@ class StockScreener:
         
         # Create sidebar for filtering options
         sector_list = sorted(list(set(stock.sector for stock in self.stocks)))
-        selected_sector = st.sidebar.selectbox('Sector', ['All'] + sector_list)
+        selected_sector = st.sidebar.selectbox('Sector', ['All'] + sector_list) # parameters: name of the selectbox, choices within the selectbox
         
         min_price = st.sidebar.number_input('Min Price', value=0.0, step=0.01)
         max_price = st.sidebar.number_input('Max Price', value=1000000.0, step=0.01)
@@ -103,7 +103,7 @@ class StockScreener:
         metric_operator_list = ['>', '>=', '<', '<=', '==']
         selected_metric_operator = st.sidebar.selectbox('Metric Operator', metric_operator_list)
         
-        metric_value = st.sidebar.text_input('Metric Value', 'Enter value of the word price')
+        metric_value = st.sidebar.text_input('Metric Value', 'Enter value or the word price')
         try:
             metric_value = float(metric_value)
             print(metric_value)
@@ -140,9 +140,7 @@ class StockScreener:
             # Display visualizations for filtered stocks
             display_filtered_stocks(predicted_stocks, selected_metric, selected_indicator, self.models)
             
-
-    
-# The create_model() function needs to be defined outside the StockScreener Class to be in scope  
+ 
 # Simple Dense Model
 def create_model(train_data):
         # Creating a sequential model (neural network suitable for binary classification tasks)
@@ -154,6 +152,18 @@ def create_model(train_data):
         ])
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         return model    
+    
+def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator, models=None):
+    # Display Filtered Stocks
+    if len(filtered_stocks) == 0:
+        st.write('No stocks match the specified criteria after Predicting')
+    else:
+        filtered_tickers = [stock.ticker for stock in filtered_stocks]
+        tabs = st.tabs(filtered_tickers)
+        for n in range(len(tabs)):
+            # Divide the metrics into 3 lists for the 3 columns
+            metrics = list(filtered_stocks[n].metric.items())    
+    
     
     
     
