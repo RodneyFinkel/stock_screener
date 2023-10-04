@@ -28,9 +28,9 @@ def get_sp500_stocks(sp500):
             try:
                 print(stock['ticker'])
                 #price = get_stock_price(stock['ticker'])
-                price = get_current_stock_price(stock['ticker'])
+                price = get_stock_price2(stock['ticker'])
+                print(price)
                 sp500_stocks.append((stock['ticker'], stock['sector'], price))
-                print(sp500_stocks)
                 
             except:
                     print((f"There was an issue with {stock['ticker']}."))
@@ -56,16 +56,24 @@ def get_stock_price(ticker):
                 price = 0.0  
                 return price
         
-def get_current_stock_price(ticker):
+def get_stock_price2(ticker):
     stock = yf.Ticker(ticker)
     info = stock.info
+    try:
+        if 'currentPrice' in info:
+                price = info['currentPrice']  # use currentPrice or regularMarketPrice
+                return price
+        else:
+                print(f"Current price not available for {ticker}")
+                return None
+
+    except:
+            print(f'Current price not available for {ticker}')
+            return price
     
-    if 'currentPrice' in info:
-        price = info['currentPrice']  # use currentPrice or regularMarketPrice
-        return price
-    else:
-        print(f"Current price not available for {ticker}")
-        return None
+        
+        
+            
                 
  
         
