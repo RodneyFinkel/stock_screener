@@ -101,7 +101,7 @@ def filter_metric(stock, metric, operator, value):
     if 'B' in metric_value:
         metric = metric_value.replace('B', '')
         value = float(value) / 1e9
-    elif 'M' in metic_value:
+    elif 'M' in metric_value:
         metric = metric_value.replace('M', '')
         value = float(value) / 1e6
     elif '%' in metric_value:
