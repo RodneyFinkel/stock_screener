@@ -1,4 +1,4 @@
-from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicator, get_stock_price, get_historical)
+from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_historical)
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -107,6 +107,19 @@ class StockScreener:
         try:
             metric_value = float(metric_value)
             print(metric_value)
+        except:
+            pass
+        
+        indicator_list = sorted(list(set(indicator for stock in self.stocks for indicator in stock.today_technical_indicators.keys())))
+        selected_indicator = st.sidebar.selectbox("Indicator", ["All"] + indicator_list)
+
+        indicator_operator_list = [">", ">=", "<", "<=", "=="]
+        selected_indicator_operator = st.sidebar.selectbox("Indicator Operator", indicator_operator_list)
+
+        indicator_value = st.sidebar.text_input("Indicator Value", "Enter value or the word price")
+        try:
+            indicator_value = float(indicator_value)
+            print(indicator_value)
         except:
             pass
         
