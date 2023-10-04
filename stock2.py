@@ -190,8 +190,28 @@ def get_stock_price(ticker):
     
     except:
         print(f'Price not available for {ticker}')
-        self.price = 0.0  
+        price = 0.0  
         return price
+    
+@st.cache_data
+def get_stock_price2(ticker):
+    stock = yf.Ticker(ticker)
+    info = stock.info
+    
+    try:
+        if 'currentPrice' in info:
+            price = info['currentPrice'] # use currentPrice or regularMarketPrice
+            price = float(price)
+            return price
+        else:
+            print(f"Current price not available for {ticker}")
+    
+    except:
+        print(f'Current price not available for {ticker}')
+        price = 0.0  
+        return price
+    
+        
         
 @st.cache_data
 def get_historical(ticker):

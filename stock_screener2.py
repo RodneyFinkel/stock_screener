@@ -1,4 +1,4 @@
-from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_historical)
+from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_stock_price2, get_historical)
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -261,7 +261,7 @@ def get_sp500_stocks(sp500):
     for stock in sp500:
         stock_download.write(f'Downloading {stock["ticker"]} Data')
         try:
-            price = get_stock_price(stock['ticker'])
+            price = get_stock_price2(stock['ticker'])
             data = get_historical(stock['ticker'])
             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
             stock_download.empty()
