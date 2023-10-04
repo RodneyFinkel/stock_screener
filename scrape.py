@@ -27,7 +27,7 @@ def get_sp500_stocks(sp500):
     for stock in sp500:
             try:
                 print(stock['ticker'])
-                price = get_stock_price2(stock['ticker'])
+                price = get_stock_price(stock['ticker'])
                 sp500_stocks.append((stock['ticker'], stock['sector'], price))
                 print(sp500_stocks)
                 
@@ -42,7 +42,7 @@ def get_headers():
         return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
 
 
-def get_stock_price2(ticker):
+def get_stock_price(ticker):
         try:
                 url = f'https://finance.yahoo.com/quote/{ticker}'
                 response = requests.get(url, headers=get_headers())
