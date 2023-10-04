@@ -20,13 +20,29 @@ def get_stock_price2(ticker):
         
         # except:
         #     print(f'Price not available for {ticker}')
-        #     price = 0.0     
+        #     price = 0.0  
+        
+def get_stock_price(ticker):
+    try:
+        url = f'https://finance.yahoo.com/quote/{ticker}'
+        response = requests.get(url, headers=get_headers())
+        soup = BeautifulSoup(response.content, 'html.parser')
+        data = soup.find('fin-streamer', {'data-symbol': ticker})
+        price = float(data['value'])
+        print('Stock_price', price)
+        return  price
+    
+    except:
+        print(f'Price not available for {ticker}')
+        self.price = 0.0  
+        return price    
         
 if __name__ == "__main__":
     ticker = 'BABA'
     get_stock_price2(ticker)
+    get_stock_price(ticker)
     
     
     
-    
+ 
     

@@ -261,8 +261,9 @@ def get_sp500_stocks(sp500):
     for stock in sp500:
         stock_download.write(f'Downloading {stock["ticker"]} Data')
         try:
-            price = get_stock_price(stock['ticker'])
+            
             data = get_historical(stock['ticker'])
+            price = get_stock_price(stock['ticker'])
             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
             stock_download.empty()
         except:
