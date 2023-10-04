@@ -177,7 +177,7 @@ def scrape_data(url, metric_aliases):
                 
 ### CACHED FUNCTIONS ###
     
-# Scrape price
+# Scrape price needs fixing
 @st.cache_data
 def get_stock_price(ticker):
     try:
