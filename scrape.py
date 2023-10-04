@@ -31,6 +31,7 @@ def get_sp500_stocks(sp500):
                 price = get_stock_price2(stock['ticker'])
                 print(price)
                 sp500_stocks.append((stock['ticker'], stock['sector'], price))
+                print(sp500_stocks)
                 
             except:
                     print((f"There was an issue with {stock['ticker']}."))
