@@ -186,7 +186,6 @@ def get_stock_price(ticker):
         soup = BeautifulSoup(response.content, 'html.parser')
         data = soup.find('fin-streamer', {'data-symbol': ticker})
         price = float(data['value'])
-        print('Stock_price', price)
         return  price
     
     except:
