@@ -18,5 +18,5 @@ if __name__ == '__main__':
     screener = StockScreener(sp500_stocks, filters)
     
     # Create streamlit app
-    screner.create_app()
+    screener.create_app()
 
