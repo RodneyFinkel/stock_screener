@@ -67,13 +67,13 @@ class Stock:
             'Operating Cash Flow (ttm)': 'operating_cash_flow',
             'Levered Free Cash Flow (ttm)': 'levered_free_cash_flow'
         }
-        
+        print('instantiating metrics')
         self.metrics = scrape_data(self.url, self.metric_aliases)
         
         
 ### Utils Functions ###  
     
-def get_headers(self):
+def get_headers():
     return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
 
 def filter_sector(stock, sector):
