@@ -266,10 +266,11 @@ def get_sp500_stocks(sp500):
             data = get_historical(stock['ticker'])
             #print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
             print('test1')
-            test = Stock(stock['ticker'], stock['sector'], price, data)
+            #test = Stock(stock['ticker'], stock['sector'], price, data)
             print('test2')
             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
             print(sp500_stocks)
+            print('all debug tests passed')
             stock_download.empty()
         except:
             print('GAAAAAAHHH!!')

@@ -159,7 +159,7 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
         raise ValueError(f'Invalid operator: {operator}')
     
                
-# Scrape statistics   NEEDS FIXING
+# Scrape statistics 
 def scrape_data(url, metric_aliases):
     print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())
