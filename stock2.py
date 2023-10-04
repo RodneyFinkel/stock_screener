@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 # Stock Class
 class Stock:
     def __init__(self, ticker, sector, price=None, data=None):
+        print('initializing stock object')
         self.ticker = ticker
         self.sector = sector
         self.url = f"https://finance.yahoo.com/quote/{self.ticker}/key-statistics?p{self.ticker}"
@@ -16,7 +17,8 @@ class Stock:
         self.data = data 
         # Deep Learning Attributes
         train_data_aux, prices = add_technical_indicators(self.data)
-        self.technical_indicators = train_aux_data.iloc[:-10, :].drop('Close', axis=1) # excluding the last 10 days of data and dropping close prices
+        self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1) # excluding the last 10 days of data and dropping close prices
+        print('technical indicators attribute instantiated')
         # labels for training predictive models
         # collect labels as true or false for each stock by labelling those whose price, 10 days ahead of a current date, is higher as True. 
         # this is accomplished by shifting prices by 10 for each current date. The last 10 rows of labels_aux are ommited
@@ -24,13 +26,12 @@ class Stock:
         # in the next 10 days for each day in the dataset, excluding the last 10 days.
         labels_aux = (train_data_aux['Close'].shift(-10)) > train_data_aux['Close'].astype(int)
         self.labels = labels_aux[:-10]
-        
         # Today's features for prediction
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
         self.labels = pd.DataFrame()
-        self.prediction = 0.0       
+        self.prediction = 0.0 
+        print('labels set')      
         # Metrics
-        #self.metrics = {} # self.data = {} 
         # Metric aliases pairs
         self.metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
@@ -66,7 +67,9 @@ class Stock:
             'Operating Cash Flow (ttm)': 'operating_cash_flow',
             'Levered Free Cash Flow (ttm)': 'levered_free_cash_flow'
         }
+        
         self.metrics = scrape_data(self.url, self.metric_aliases)
+        
         
 ### Utils Functions ###  
     
@@ -156,8 +159,9 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
         raise ValueError(f'Invalid operator: {operator}')
     
                
-# Scrape statistics
+# Scrape statistics   NEEDS FIXING
 def scrape_data(url, metric_aliases):
+    print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())
     soup = BeautifulSoup(page.content, 'html.parser')
     
@@ -170,14 +174,14 @@ def scrape_data(url, metric_aliases):
             cols = row.find_all('td')
             if len(cols) == 2:
                 metric = cols[0].text.strip()
-                if metric in self.metric_aliases:
-                    data[self.metric_aliases[metric]] = cols[1].text.strip()
-    
+                if metric in metric_aliases:
+                    data[metric_aliases[metric]] = cols[1].text.strip()
+    print('scrape_data function exit')
     return data
                 
 ### CACHED FUNCTIONS ###
     
-# Scrape price needs fixing
+
 @st.cache_data
 def get_stock_price(ticker):
     try:
@@ -256,7 +260,6 @@ def add_technical_indicators(data):
         
         # Features for deep learning model
         train_data_aux = prices[['Close', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].dropna()
-        
         return train_data_aux, prices
        
         

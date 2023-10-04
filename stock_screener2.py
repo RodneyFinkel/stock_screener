@@ -264,12 +264,15 @@ def get_sp500_stocks(sp500):
             price = get_stock_price2(stock['ticker'])
             print(price)
             data = get_historical(stock['ticker'])
-            print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
+            #print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
+            print('test1')
+            test = Stock(stock['ticker'], stock['sector'], price, data)
+            print('test2')
             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
             print(sp500_stocks)
             stock_download.empty()
         except:
-            print(sp500_stocks)
+            print('GAAAAAAHHH!!')
             stock_issues.write(f'There was an issue with {stock["ticker"]}.')
             
     stock_issues.empty()
