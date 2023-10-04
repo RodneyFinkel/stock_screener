@@ -212,8 +212,51 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
     table_data = [[s.ticker, s.sector, s.price, s.metrics.get(selected_metric, "N/A"), s.today_technical_indicators.get(selected_indicator, "N/A"), float(s.prediction) if s.prediction != 0 else "N/A"] for s in filtered_stocks]
     table_columns = ["Ticker", "Sector", "Price", f"Metric: {selected_metric}", f"Indicator: {selected_indicator}", "Prediction" if any(s.prediction != 0 for s in filtered_stocks) else ""]
     st.write(pd.DataFrame(table_data, columns=table_columns))
+    
 
-                
+## GET SP 500 STOCK DATA ##
+
+def get_sp_tickers():
+    # Get sp500 ticker and sector
+    url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    table = soup.find('table', {'class': 'wikitable sortable'})
+    rows = table.find_all('tr')[1:] # skip the header row
+    
+    sp500 = []
+    
+    for row in rows:
+        cells = row.find_all('td')
+        ticker = cells[0].text.strip()
+        company = cells[1].text.strip()
+        sector = cells[3].text.strip()
+        sp500.append({'ticker': ticker, 'company': company, 'sector': sector})
+        
+    return sp500
+
+# Run screener for all sp500 tickers
+@st.cache_data
+def get_sp500_stocks(sp500):
+    
+    sp500_stocks = []
+    # Streamlit Text
+    stock_download = st.empty()
+    stock_issues = st.empty()
+    # Create Stock object for every stock with data
+    for stock in sp500:
+        stock_download.write(f'Downloading {stock["ticker"]} Data')
+        try:
+            price = get_stock_price(stock['ticker'])
+            data = get_historical(stock['ticker'])
+            sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
+            stock_download.empty()
+        except:
+            stock_issues.write(f'There was an issue with {stock["ticker"]}.')
+            
+    stock_issues.empty()
+    return sp500_stocks                
                 
             
             
