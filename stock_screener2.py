@@ -262,10 +262,14 @@ def get_sp500_stocks(sp500):
         stock_download.write(f'Downloading {stock["ticker"]} Data')
         try:
             price = get_stock_price2(stock['ticker'])
+            print(price)
             data = get_historical(stock['ticker'])
+            print(data)
             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
+            print(sp500_stocks)
             stock_download.empty()
         except:
+            print(sp500_stocks)
             stock_issues.write(f'There was an issue with {stock["ticker"]}.')
             
     stock_issues.empty()
