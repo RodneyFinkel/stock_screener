@@ -41,7 +41,7 @@ class StockScreener:
        
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
-            train_labels = stock.labels
+            train_labels = stock.label
             if len(train_data) == 0:
                 continue
             
@@ -51,7 +51,7 @@ class StockScreener:
             # Normalize the Data
             train_data = self.scaler.fit_transform(train_data)
             train_labels = np.array(train_labels)
-            print(f"train_data: {train_data.shape}, train_labels: {train_labels.shape}")
+            print(f"train_data shape2: {train_data.shape}, train_labels shape2: {train_labels.shape}")
             
             #Create and train model
             model = create_model(train_data) 

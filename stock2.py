@@ -19,6 +19,7 @@ class Stock:
         train_data_aux, prices = add_technical_indicators(self.data)
         self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1) # excluding the last 10 days of data and dropping close prices
         print('technical indicators attribute instantiated')
+        print(f"technical indicators shape1: {self.technical_indicators.shape}")
         # labels for training predictive models
         # collect labels as true or false for each stock by labelling those whose price, 10 days ahead of a current date, is higher as True. 
         # this is accomplished by shifting prices by 10 for each current date. The last 10 rows of labels_aux are ommited
@@ -26,6 +27,7 @@ class Stock:
         # in the next 10 days for each day in the dataset, excluding the last 10 days.
         labels_aux = (train_data_aux['Close'].shift(-10)) > train_data_aux['Close'].astype(int)
         self.label = labels_aux[:-10]
+        print(f"labels shape1: {self.label.shape}")
         # Today's features for prediction
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
         self.labels = pd.DataFrame()
