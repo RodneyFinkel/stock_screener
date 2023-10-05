@@ -55,7 +55,7 @@ class StockScreener:
             
             #Create and train model
             model = create_model(train_data) 
-            model.fit(train_data, train_labels, epochs=100)
+            history = model.fit(train_data, train_labels, epochs=100)
             self.models[stock.ticker] = model, history # models needs to be defined as a StockScreener attribute, namely a dictionary
             
         training_models.empty()
@@ -64,19 +64,13 @@ class StockScreener:
             
     # Predict whether new stocks will pass filters 
     def predict_stocks(self, new_stocks):
-        # Add technical indicators to new stocks
-        for stock in new_stocks:
-            stock.get_historical()
-            stock.add_technical_indicators()
-            
-        
         # Make predictions for each stock using its corresponding model
         predicted_stocks = []
         for stock in new_stocks:
             if stock.ticker in self.models:
                 model, _ = self.models[stock.ticker]
                 # Reshape as there is only one sample
-                new_feature_aux = np.array(stock.today_technical_indicators).reshape(1,-1)
+                new_features_aux = np.array(stock.today_technical_indicators).reshape(1,-1)
                 new_stock_data = self.scaler.fit_transform(new_features_aux)
                 prediction = model.predict(new_stock_data)
                 stock.prediction = prediction

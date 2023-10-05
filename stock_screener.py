@@ -289,6 +289,7 @@ class StockScreener:
             
     # Predict whether new stocks will pass filters (new_stocks gets passed as filtered_stocks in app.py)
     def predict_stocks(self, new_stocks):
+        # refactor in new code base for app2 since tech indicators are initialized in stock class
         # Add technical indicators to new stocks
         for stock in new_stocks:
             stock.get_historical()
