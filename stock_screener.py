@@ -146,10 +146,12 @@ class Stock:
         
         # Features for deep learning model
         train_data_aux = prices[['Close', 'MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand']].dropna()
+        print(f"train_data_aux shape: {train_data_aux.shape}")
         self.technical_indicators = train_data_aux.iloc[:-10, :].drop('Close', axis=1)
         
         # Set label as profit loss of 10 day future price from actual price
         labels_aux = train_data_aux['Close'].shift(-10) > train_data_aux['Close'].astype(int)
+        print(f"labels_aux shape: {labels_aux.shape}")
         self.labels = labels_aux[:-10]
         
         # Today features for predicition

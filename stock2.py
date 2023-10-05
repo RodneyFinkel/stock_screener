@@ -25,7 +25,7 @@ class Stock:
         # These labels indicate whether there would be a profit (True) or a loss (False) 
         # in the next 10 days for each day in the dataset, excluding the last 10 days.
         labels_aux = (train_data_aux['Close'].shift(-10)) > train_data_aux['Close'].astype(int)
-        self.labels = labels_aux[:-10]
+        self.label = labels_aux[:-10]
         # Today's features for prediction
         self.today_technical_indicators = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
         self.labels = pd.DataFrame()

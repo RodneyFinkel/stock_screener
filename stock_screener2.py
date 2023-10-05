@@ -42,7 +42,7 @@ class StockScreener:
         for stock in filtered_stocks:
             train_data = stock.technical_indicators
             train_labels = stock.labels
-            if len(train_Data) == 0:
+            if len(train_data) == 0:
                 continue
             
             # Ensure train_data is a 2D array
@@ -51,6 +51,7 @@ class StockScreener:
             # Normalize the Data
             train_data = self.scaler.fit_transform(train_data)
             train_labels = np.array(train_labels)
+            print(f"train_data: {train_data.shape}, train_labels: {train_labels.shape}")
             
             #Create and train model
             model = create_model(train_data) 
@@ -130,7 +131,7 @@ class StockScreener:
         if selected_metric != 'All':
             new_filters.append(lambda stock: filter_metric(stock, selected_metric, selected_metric_operator, metric_value))
         if selected_indicator != 'All':
-            new_filters.append(lambda stock: filter_technical_indicator(stock, selected_indicator, selected_indicator_operator, indicator_value))
+            new_filters.append(lambda stock: filter_technical_indicators(stock, selected_indicator, selected_indicator_operator, indicator_value))
         new_filters.append(lambda stock: filter_price(stock, min_price, max_price))
         self.filters = new_filters
         
@@ -176,7 +177,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
         for n in range(len(tabs)):
             # Divide the metrics into 3 lists for the 3 columns
             # each item of filtered_stocks is an object of the stock class and metric is a class attribute so metric are accesible with .metric
-            metrics = list(filtered_stocks[n].metric.items())    # .items is a method that returns a view of the metrics as a list of tuples (key-value pairs)
+            metrics = list(filtered_stocks[n].metrics.items())    # .items is a method that returns a view of the metrics as a list of tuples (key-value pairs)
             num_metrics = len(metrics)
             col1_metrics = metrics[:num_metrics//3]
             col2_metrics = metrics[num_metrics//3:(2*num_metrics)//3]
