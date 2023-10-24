@@ -256,7 +256,7 @@ def get_sp500_stocks(sp500):
     for stock in sp500:
         stock_download.write(f'Downloading {stock["ticker"]} Data')
         try:
-            price = get_stock_price2(stock['ticker'])
+            price = get_stock_price2(stock['ticker']) # yf.info from get_stock_price2()in stock2.py not working
             print(price)
             data = get_historical(stock['ticker'])
             #print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
