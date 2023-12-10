@@ -83,7 +83,7 @@ class StockScreener:
     # Create web app for stock screener 
     def create_app(self):
         
-        st.title(':grey[Stock Screener and AI modeler]')
+        st.title(':grey[STOCK SCREENER and NN based AI MODEL]')
         
         # Create sidebar for filtering options
         sector_list = sorted(list(set(stock.sector for stock in self.stocks)))
@@ -106,8 +106,7 @@ class StockScreener:
             pass
         
         indicator_list = sorted(list(set(indicator for stock in self.stocks for indicator in stock.today_technical_indicators.keys())))
-        selected_indica
-        tor = st.sidebar.selectbox("Indicator", ["All"] + indicator_list)
+        selected_indicator = st.sidebar.selectbox("Indicator", ["All"] + indicator_list)
 
         indicator_operator_list = [">", ">=", "<", "<=", "=="]
         selected_indicator_operator = st.sidebar.selectbox("Indicator Operator", indicator_operator_list)
