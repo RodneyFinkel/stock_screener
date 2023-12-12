@@ -11,3 +11,4 @@ run: pip install -r requirements.txt
 run the app with: streamlit run app2.py
 
 
+Alternatively use this link: https://rodneyfinkel-stock-screener-app2-lgkrvg.streamlit.app/
