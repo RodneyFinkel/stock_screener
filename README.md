@@ -1,4 +1,4 @@
-# stock_screener
+# stock_screener with NN model
 OOP stock analyser and filter with AI modelling, daily metrics and streamlit frontend
 
 app2.py, stock2.py and stock_screener2.py correspond to the streamlit version
