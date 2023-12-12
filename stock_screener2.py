@@ -83,7 +83,7 @@ class StockScreener:
     # Create web app for stock screener 
     def create_app(self):
         
-        st.title(':grey[STOCK SCREENER and NN based AI MODEL]')
+        st.title(':grey[SP500 Stock Screener and NN based Predictive Model]')
         
         # Create sidebar for filtering options
         sector_list = sorted(list(set(stock.sector for stock in self.stocks)))
