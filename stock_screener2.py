@@ -1,4 +1,4 @@
-from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_stock_price2, get_historical)
+from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_stock_price2, get_historical, add_technical_indicators)
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -245,33 +245,70 @@ def get_sp_tickers():
     return sp500
 
 # Run screener for all sp500 tickers
+# @st.cache_data
+# def get_sp500_stocks(sp500):
+    
+#     sp500_stocks = []
+#     # Streamlit Text
+#     stock_download = st.empty()
+#     stock_issues = st.empty()
+#     # Create Stock object for every stock with data
+#     for stock in sp500:
+#         stock_download.write(f'Downloading {stock["ticker"]} Data')
+#         try:
+#             price = get_stock_price2(stock['ticker']) # yf.info from get_stock_price2()in stock2.py not working
+#             print(price)
+#             data = get_historical(stock['ticker'])
+#             #print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
+#             print('test1')
+#             #test = Stock(stock['ticker'], stock['sector'], price, data)
+#             sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
+#             #print(sp500_stocks)
+#             print('all debug tests passed')
+#             stock_download.empty()
+#         except:
+#             print('GAAAAAAHHH!!')
+#             stock_issues.write(f'There was an issue with {stock["ticker"]}.')
+            
+#     stock_issues.empty()
+#     return sp500_stocks      
+
+# Run screener for all sp500 tickers
 @st.cache_data
 def get_sp500_stocks(sp500):
     
-    sp500_stocks = []
+    sp500_stocks = [] 
     # Streamlit Text
     stock_download = st.empty()
+    stock_test = st.empty()
     stock_issues = st.empty()
-    # Create Stock object for every stock with data
+    # # Create Stock object for every stock with data
     for stock in sp500:
         stock_download.write(f'Downloading {stock["ticker"]} Data')
+        
         try:
             price = get_stock_price2(stock['ticker']) # yf.info from get_stock_price2()in stock2.py not working
             print(price)
             data = get_historical(stock['ticker'])
-            #print(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price: {price}, Data: {data}")
+            technical_data, prices  = add_technical_indicators(data)
+            prices_last = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
+            stock_test.write(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price:{price}, Prices:{prices_last}, Technical_Data:{technical_data.columns} ")
             print('test1')
-            #test = Stock(stock['ticker'], stock['sector'], price, data)
-            sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
-            #print(sp500_stocks)
+            stock_instance = Stock(stock['ticker'], stock['sector'], price, data)
+            sp500_stocks.append(stock_instance)
+            # sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
             print('all debug tests passed')
             stock_download.empty()
+            stock_test.empty()
         except:
             print('GAAAAAAHHH!!')
             stock_issues.write(f'There was an issue with {stock["ticker"]}.')
+    
+    
             
     stock_issues.empty()
     return sp500_stocks                
+                          
                 
             
             
