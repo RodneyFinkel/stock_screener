@@ -187,11 +187,20 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             for metric, value in col3_metrics:
                 col3.metric(metric, value)
                 
-            fig, ax = plt.subplots()
-            ax.plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
-            ax.set_title(f'{filtered_stocks[n].ticker} Close Price')
-            ax.set_xlabel('Date')
-            ax.set_ylabel('Price')
+            fig, ax = plt.subplots(2, 1, figsize=(10.4, 4.8))
+            ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
+            ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price')
+            ax[0].set_xlabel('Date')
+            ax[0].set_ylabel('Price')
+            
+            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'], label='Close Price')
+            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['UpperBand'], label='Upper Band')
+            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['LowerBand'], label='Lower Band')
+            ax[1].fill_between(filtered_stocks[n].data.index, filtered_stocks[n].data['LowerBand'], filtered_stocks[n].data['UpperBand'], alpha=0.35, color='gray', label='Bollinger Bands')
+            ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands')
+            ax[1].set_xlabel('Date')
+            ax[1].set_ylabel('Price')
+            
             # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
             tabs[n].pyplot(fig)
             
