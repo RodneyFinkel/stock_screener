@@ -188,7 +188,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
                 col3.metric(metric, value)
             
             # Plot Closing Price    
-            fig, ax = plt.subplots(4, 1, figsize=(28, 20))
+            fig, ax = plt.subplots(4, 1, figsize=(20, 18))
             ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
             ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price')
             ax[0].set_xlabel('Date')
