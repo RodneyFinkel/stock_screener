@@ -186,7 +186,8 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
                 col2.metric(metric, value)
             for metric, value in col3_metrics:
                 col3.metric(metric, value)
-                
+            
+            # Plot Closing Price    
             fig, ax = plt.subplots(4, 1, figsize=(28, 20))
             ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
             ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price')
@@ -194,28 +195,28 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[0].set_ylabel('Price')
             
             # Plot Bollinger Bands
-            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'], label='Close Price')
-            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['UpperBand'], label='Upper Band')
-            ax[1].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['LowerBand'], label='Lower Band')
-            ax[1].fill_between(filtered_stocks[n].data.index, filtered_stocks[n].data['LowerBand'], filtered_stocks[n].data['UpperBand'], alpha=0.35, color='gray', label='Bollinger Bands')
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['Close'][-1095:], label='Close Price')
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['UpperBand'][-1095:], label='Upper Band')
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], label='Lower Band')
+            ax[1].fill_between(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], filtered_stocks[n].data['UpperBand'][-1095:], alpha=0.35, color='gray', label='Bollinger Bands')
             ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands')
-            ax[1].set_xlabel('Date')
+            ax[1].set_xlabel('Date_altered')
             ax[1].set_ylabel('Price')
             
             # Plot MACD
-            ax[2].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['MACD'], label='MACD')
+            ax[2].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['MACD'][-1095:], label='MACD')
             # ax[2].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['signal'], label='Signal')
             ax[2].set_title(f'{filtered_stocks[n].ticker}: MACD')
             ax[2].set_xlabel('Date')
             ax[2].set_ylabel('MACD')
             
             # Plot 20-day and 50-day moving averages
-            ax[3].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'], label='Close Price')
-            ax[3].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['MA20'], label='20-day MA')
-            ax[3].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['MA50'], label='50-day MA')
-            ax[3].fill_between(filtered_stocks[n].data.index, filtered_stocks[n].data['MA20'], filtered_stocks[n].data['MA50'], alpha=0.35, color='gray', label='Moving Averages')
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['Close'][-730:], label='Close Price')
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], label='20-day MA')
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA50'][-730:], label='50-day MA')
+            ax[3].fill_between(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], filtered_stocks[n].data['MA50'][-730:], alpha=0.35, color='gray', label='Moving Averages')
             ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages')
-            ax[3].set_xlabel('Date')
+            ax[3].set_xlabel('Date_altered')
             ax[3].set_ylabel('Price')
             
             
