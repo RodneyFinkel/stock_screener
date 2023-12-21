@@ -3,6 +3,9 @@ import requests
 from pprint import pprint
 import yfinance as yf
 import matplotlib.pyplot as plt 
+import seaborn as sns
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 def get_headers():
@@ -114,9 +117,11 @@ def add_technical_indicators(data):
         return train_data_aux, prices
 
 def plot_technical_indicators(prices, ticker):
+    
     fig, ax = plt.subplots(4, 1, figsize=(16, 10), dpi=100)
 
     # Plot 20-day and 50-day moving averages
+    ax[0].plot(prices.index, prices['Close'], label='Close Price')
     ax[0].plot(prices.index, prices['Close'], label='Close Price')
     ax[0].plot(prices.index, prices['MA20'], label='20-day MA')
     ax[0].plot(prices.index, prices['MA50'], label='50-day MA')
@@ -125,6 +130,42 @@ def plot_technical_indicators(prices, ticker):
     ax[0].set_xlabel('Date')
     ax[0].set_ylabel('Price')
     ax[0].legend()
+
+
+    # Set a dark theme
+    # template = "plotly_dark"
+    
+    # # Create a subplot figure
+    # fig = make_subplots(rows=2, cols=1, shared_xaxes=True, subplot_titles=[
+    #     f'{ticker}: Moving Averages',
+    #     f'{ticker}: Bollinger Bands'
+    # ])
+
+    # # Plot 20-day and 50-day moving averages
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=1, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], mode='lines', name='20-day MA'), row=1, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA50'], mode='lines', name='50-day MA'), row=1, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Moving Averages'), row=1, col=1)
+
+    # # Plot Bollinger Bands
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=2, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], mode='lines', name='Upper Band'), row=2, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['LowerBand'], mode='lines', name='Lower Band'), row=2, col=1)
+    # fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Bollinger Bands'), row=2, col=1)
+
+    # # Update layout for better appearance
+    # fig.update_layout(
+    #     title=f'{ticker} Technical Indicators',
+    #     xaxis_rangeslider_visible=False,
+    #     template=template,
+    #     height=800,
+    #     showlegend=False,
+    #     paper_bgcolor='rgba(0,0,0,0)',
+    #     plot_bgcolor='rgba(0,0,0,0)',
+    # )
+
+    # # Show the figure
+    # fig.show()
 
     # Plot RSI
     ax[1].plot(prices.index, prices['RSI'], label='RSI')
@@ -142,7 +183,8 @@ def plot_technical_indicators(prices, ticker):
     ax[2].set_xlabel('Date')
     ax[2].set_ylabel('MACD')
     ax[2].legend()
-
+    
+    
     # Plot Bollinger Bands
     ax[3].plot(prices.index, prices['Close'], label='Close Price')
     ax[3].plot(prices.index, prices['UpperBand'], label='Upper Band')
