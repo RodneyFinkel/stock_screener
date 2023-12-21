@@ -187,45 +187,87 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             for metric, value in col3_metrics:
                 col3.metric(metric, value)
             
+            # # Plot Closing Price    
+            # fig, ax = plt.subplots(4, 1, figsize=(20, 18))
+            # ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
+            # ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price')
+            # ax[0].set_xlabel('Date')
+            # ax[0].set_ylabel('Price')
+            
+            # # Plot Bollinger Bands
+            # ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['Close'][-1095:], label='Close Price')
+            # ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['UpperBand'][-1095:], label='Upper Band')
+            # ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], label='Lower Band')
+            # ax[1].fill_between(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], filtered_stocks[n].data['UpperBand'][-1095:], alpha=0.35, color='gray', label='Bollinger Bands')
+            # ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands')
+            # ax[1].set_xlabel('Date_altered')
+            # ax[1].set_ylabel('Price')
+            
+            # # Plot MACD
+            # ax[2].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['MACD'][-1095:], label='MACD')
+            # # ax[2].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['signal'], label='Signal')
+            # ax[2].set_title(f'{filtered_stocks[n].ticker}: MACD')
+            # ax[2].set_xlabel('Date')
+            # ax[2].set_ylabel('MACD')
+            
+            # # Plot 20-day and 50-day moving averages
+            # ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['Close'][-730:], label='Close Price')
+            # ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], label='20-day MA')
+            # ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA50'][-730:], label='50-day MA')
+            # ax[3].fill_between(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], filtered_stocks[n].data['MA50'][-730:], alpha=0.35, color='gray', label='Moving Averages')
+            # ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages')
+            # ax[3].set_xlabel('Date_altered')
+            # ax[3].set_ylabel('Price')
+            
+            
+            # # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
+            # tabs[n].pyplot(fig)
+            
+            # Set the style to a dark background
+            plt.style.use('dark_background')
+
             # Plot Closing Price    
             fig, ax = plt.subplots(4, 1, figsize=(20, 18))
-            ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'])
-            ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price')
-            ax[0].set_xlabel('Date')
-            ax[0].set_ylabel('Price')
-            
+            ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'], color='white')  # Specify line color
+            ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price', color='white')  # Specify title color
+            ax[0].set_xlabel('Date', color='white')  # Specify xlabel color
+            ax[0].set_ylabel('Price', color='white')  # Specify ylabel color
+
             # Plot Bollinger Bands
-            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['Close'][-1095:], label='Close Price')
-            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['UpperBand'][-1095:], label='Upper Band')
-            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], label='Lower Band')
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['Close'][-1095:], label='Close Price', color='white')
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['UpperBand'][-1095:], label='Upper Band', color='yellow')  # Specify Upper Band color
+            ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], label='Lower Band', color='red')  # Specify Lower Band color
             ax[1].fill_between(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['LowerBand'][-1095:], filtered_stocks[n].data['UpperBand'][-1095:], alpha=0.35, color='gray', label='Bollinger Bands')
-            ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands')
-            ax[1].set_xlabel('Date_altered')
-            ax[1].set_ylabel('Price')
-            
+            ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands', color='white')
+            ax[1].set_xlabel('Date_altered', color='white')
+            ax[1].set_ylabel('Price', color='white')
+
             # Plot MACD
-            ax[2].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['MACD'][-1095:], label='MACD')
-            # ax[2].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['signal'], label='Signal')
-            ax[2].set_title(f'{filtered_stocks[n].ticker}: MACD')
-            ax[2].set_xlabel('Date')
-            ax[2].set_ylabel('MACD')
-            
+            ax[2].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['MACD'][-1095:], label='MACD', color='cyan')  # Specify MACD color
+            ax[2].set_title(f'{filtered_stocks[n].ticker}: MACD', color='white')
+            ax[2].set_xlabel('Date', color='white')
+            ax[2].set_ylabel('MACD', color='white')
+
             # Plot 20-day and 50-day moving averages
-            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['Close'][-730:], label='Close Price')
-            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], label='20-day MA')
-            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA50'][-730:], label='50-day MA')
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['Close'][-730:], label='Close Price', color='white')
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], label='20-day MA', color='green')  # Specify 20-day MA color
+            ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA50'][-730:], label='50-day MA', color='orange')  # Specify 50-day MA color
             ax[3].fill_between(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['MA20'][-730:], filtered_stocks[n].data['MA50'][-730:], alpha=0.35, color='gray', label='Moving Averages')
-            ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages')
-            ax[3].set_xlabel('Date_altered')
-            ax[3].set_ylabel('Price')
-            
-            
+            ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages', color='white')
+            ax[3].set_xlabel('Date_altered', color='white')
+            ax[3].set_ylabel('Price', color='white')
+
+            # Adjusting the background color of subplots
+            dark_grey = '#333333' 
+            for a in ax:
+                a.set_facecolor(dark_grey)  # Set subplot background color
+
             # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
             tabs[n].pyplot(fig)
             
             try: 
                 model, history = models[filtered_stocks[n].ticker]
-                
+                plt.style.use('dark_background')
                 fig, ax = plt.subplots(2, 1, figsize=(10, 8))
                 # Plot training loss
                 ax[0].plot(history.history['loss'])
@@ -239,9 +281,13 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
                 ax[1].set_ylabel("Accuracy")
                 
                 # Show the plot in the streamlit app
+                dark_grey = '#333333' 
+                for a in ax:
+                    a.set_facecolor(dark_grey)
                 tabs[n].pyplot(fig)           
          
             except:
+                
                 tabs[n].write("")
                 
     # Display table of filtered stocks info
