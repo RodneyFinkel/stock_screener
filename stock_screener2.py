@@ -1,4 +1,5 @@
 from stock2 import (Stock, filter_sector, filter_price, filter_metric, filter_technical_indicators, get_stock_price, get_stock_price2, get_historical, add_technical_indicators)
+import concurrent.futures
 import requests
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -7,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import streamlit as st
 from bs4 import BeautifulSoup
+
 
        
 # Stock Screener Class
@@ -348,41 +350,80 @@ def get_sp_tickers():
 #     return sp500_stocks      
 
 # Run screener for all sp500 tickers
-@st.cache_data
-def get_sp500_stocks(sp500):
+# @st.cache_data
+# def get_sp500_stocks(sp500):
     
-    sp500_stocks = [] 
-    # Streamlit Text
-    stock_download = st.empty()
-    stock_test = st.empty()
-    stock_issues = st.empty()
-    # # Create Stock object for every stock with data
-    for stock in sp500:
-        stock_download.write(f'Downloading {stock["ticker"]} Data')
+#     sp500_stocks = [] 
+#     # Streamlit Text
+#     stock_download = st.empty()
+#     stock_test = st.empty()
+#     stock_issues = st.empty()
+#     # # Create Stock object for every stock with data
+#     for stock in sp500:
+#         stock_download.write(f'Downloading {stock["ticker"]} Data')
         
-        try:
-            price = get_stock_price2(stock['ticker']) # yf.info from get_stock_price2()in stock2.py not working
-            print(price)
-            data = get_historical(stock['ticker'])
-            technical_data, prices  = add_technical_indicators(data)
-            prices_last = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
-            stock_test.write(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price:{price}, Prices:{prices_last}, Technical_Data:{technical_data.columns} ")
-            print('test1')
-            stock_instance = Stock(stock['ticker'], stock['sector'], price, data)
-            sp500_stocks.append(stock_instance)
-            # sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
-            print('all debug tests passed')
-            stock_download.empty()
-            stock_test.empty()
-        except:
-            print('GAAAAAAHHH!!')
-            stock_issues.write(f'There was an issue with {stock["ticker"]}.')
+#         try:
+#             price = get_stock_price2(stock['ticker']) 
+#             print(price)
+#             data = get_historical(stock['ticker'])
+#             technical_data, prices  = add_technical_indicators(data)
+#             prices_last = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
+#             stock_test.write(f"Ticker: {stock['ticker']}, Sector: {stock['sector']}, Price:{price}, Prices:{prices_last}, Technical_Data:{technical_data.columns} ")
+#             print('test1')
+#             stock_instance = Stock(stock['ticker'], stock['sector'], price, data)
+#             sp500_stocks.append(stock_instance)
+#             # sp500_stocks.append(Stock(stock['ticker'], stock['sector'], price, data))
+#             print('all debug tests passed')
+#             stock_download.empty()
+#             stock_test.empty()
+#         except:
+#             print('GAAAAAAHHH!!')
+#             stock_issues.write(f'There was an issue with {stock["ticker"]}.')
     
     
             
-    stock_issues.empty()
-    return sp500_stocks                
+#     stock_issues.empty()
+#     return sp500_stocks                
                           
+                          
+# Multithreaded alternative
+def fetch_stock_data(stock):
+    try:
+        price = get_stock_price2(stock['ticker'])
+        data = get_historical(stock['ticker'])
+        technical_data, prices = add_technical_indicators(data)
+        prices_last = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
+        
+        print('test1')
+        return Stock(stock['ticker'], stock['sector'], price, data)
+    except Exception as e:
+        print(f"Error fetching data for {stock['ticker']}: {e}")
+        return None
+
+
+# Run screener for all sp500 tickers
+# Function to get SP500 stocks concurrently
+@st.cache_data
+def get_sp500_stocks(sp500):
+    sp500_stocks = []
+    stock_download = st.empty()
+    
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        # Use ThreadPoolExecutor to fetch stock data concurrently
+        futures = {executor.submit(fetch_stock_data, stock): stock for stock in sp500}
+        
+        for future in concurrent.futures.as_completed(futures):
+            stock = futures[future]
+            try:
+                stock_instance = future.result()
+                if stock_instance:
+                    sp500_stocks.append(stock_instance)
+                    print('all debug tests passed')
+            except Exception as e:
+                print(f"Error processing {stock['ticker']}: {e}")
+
+    stock_download.empty()
+    return sp500_stocks                             
                 
             
             

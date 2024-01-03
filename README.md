@@ -1,5 +1,5 @@
 # stock_screener with NN model
-OOP stock analyser and filter with AI modelling, daily metrics and streamlit frontend
+OOP stock analyser and filter with AI modelling, daily indicators, multithreaded IO and streamlit frontend
 
 app2.py, stock2.py and stock_screener2.py correspond to the streamlit version
 app.py and stock_screener.py are a command line version without any visualization
