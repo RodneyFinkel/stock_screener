@@ -11,7 +11,7 @@ run: pip install -r requirements.txt
 run the app with: streamlit run app2.py
 
 DOCKERFILE:
-Run the docker image in terminal with: docker run -p 8501:8501 stock-screener2
+Run the docker image in terminal with: docker run -p 8501:8501 stock-screener2-mt
 
 Alternatively use this link: https://rodneyfinkel-stock-screener-app2-lgkrvg.streamlit.app/
 
