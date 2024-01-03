@@ -15,5 +15,3 @@ Run the docker image in terminal with: docker run -p 8501:8501 stock-screener2-m
 
 Alternatively use this link: https://rodneyfinkel-stock-screener-app2-lgkrvg.streamlit.app/
 
-
-
