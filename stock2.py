@@ -222,7 +222,7 @@ def get_stock_price2(ticker):
 @st.cache_data
 def get_historical(ticker):
     stock = yf.Ticker(ticker)
-    history = stock.history(start='2010-01-01', end='2023-09-24') 
+    history = stock.history(start='2010-01-01', end='2024-01-11') 
     return history
             
 @st.cache_data
