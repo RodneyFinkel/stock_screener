@@ -1,4 +1,4 @@
 env/
 venv/
 image.tar
-__pycache__
+__pycache__/
