@@ -225,6 +225,8 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             # # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
             # tabs[n].pyplot(fig)
             
+            
+            #### Display stock graphs ####
             # Set the style to a dark background
             plt.style.use('dark_background')
 
