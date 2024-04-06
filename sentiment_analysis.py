@@ -7,17 +7,7 @@ import csv
 import os
 
 def get_ticker_news_sentiment(ticker):
-    """
-    Returns a pandas dataframe for the given ticker's most recent news 
-    article headlines with the over sentiment of each article
-
-    Args:
-        ticker (string): _description_
-        
-    Returns: 
-    pd.DataFrame: {'Date', 'Article title', 'Article sentiment'}
-    """
-    
+   
     ticker_news = yf.Ticker(ticker)
     news_list = ticker_news.get_news()
     extractor = Goose()
@@ -44,7 +34,7 @@ def get_ticker_news_sentiment(ticker):
                 'Article title':f'{title}',
                 'Article sentiment':result[0]['label']
             })
-    print(data)       
+    #print(data)       
     df = pd.DataFrame(data)
     print(df)
     return df
@@ -53,4 +43,4 @@ def get_ticker_news_sentiment(ticker):
 #     pass
 
 if __name__ == '__main__':
-    get_ticker_news_sentiment('APPL')
+    get_ticker_news_sentiment('LMT')
