@@ -10,6 +10,7 @@ def get_ticker_news_sentiment(ticker):
    
     ticker_news = yf.Ticker(ticker)
     news_list = ticker_news.get_news()
+    
     extractor = Goose()
     pipe = pipeline("text-classification", model="ProsusAI/finbert")
     
@@ -20,6 +21,9 @@ def get_ticker_news_sentiment(ticker):
         article = extractor.extract(raw_html=response.content)
         text = article.cleaned_text
         date = article.publish_date
+        thumbnail = dict['thumbnail']['resolutions'][1]
+        publisher = dict['publisher']
+        link = dict['link']
         if len(text) > 512:
             data.append({
                 'Date':f'{date}',
@@ -28,10 +32,13 @@ def get_ticker_news_sentiment(ticker):
             
         else:
             result = pipe(text)
-            # print(results)
+            print(result)
             data.append({
                 'Date':f'{date}',
                 'Article title':f'{title}',
+                'link':f'{link}',
+                'thumbnail':f'{thumbnail}',
+                'publisher':f'{publisher}',
                 'Article sentiment':result[0]['label']
             })
     #print(data)       
