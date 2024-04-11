@@ -5,6 +5,7 @@ from requests import get
 import pandas as pd
 import csv
 import os
+import json
 
 def get_ticker_news_sentiment(ticker):
    
@@ -21,7 +22,7 @@ def get_ticker_news_sentiment(ticker):
         article = extractor.extract(raw_html=response.content)
         text = article.cleaned_text
         date = article.publish_date
-        thumbnail = dict['thumbnail']['resolutions'][1]
+        #thumbnail = dict['thumbnail']['resolutions'][1]
         publisher = dict['publisher']
         link = dict['link']
         if len(text) > 512:
@@ -37,7 +38,7 @@ def get_ticker_news_sentiment(ticker):
                 'Date':f'{date}',
                 'Article title':f'{title}',
                 'link':f'{link}',
-                'thumbnail':f'{thumbnail}',
+                #'thumbnail':f'{thumbnail}',
                 'publisher':f'{publisher}',
                 'Article sentiment':result[0]['label']
             })
@@ -46,8 +47,19 @@ def get_ticker_news_sentiment(ticker):
     print(df)
     return df
 
-# def generate_csv(ticker):
-#     pass
+def generate_csv_and_json(ticker):
+    # Create the 'out' directory if it doesn't exist
+    if not os.path.exists('out'):
+        os.makedirs('out')
+    
+    # Get sentiment analysis results
+    df = get_ticker_news_sentiment(ticker)
+    
+    # Save DataFrame to CSV
+    df.to_csv(f'out/{ticker}.csv', index=False)
+    
+    # Save DataFrame to JSON
+    df.to_json(f'out/{ticker}.json', orient='records')
 
 if __name__ == '__main__':
-    get_ticker_news_sentiment('LMT')
+    generate_csv_and_json('LMT')
