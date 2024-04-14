@@ -1,6 +1,5 @@
 ### STOCK SCREENER MAIN CLASS ###
 
-
 from stock_screener2 import StockScreener, get_sp_tickers, get_sp500_stocks
 import streamlit as st
 

@@ -63,3 +63,5 @@ def generate_csv_and_json(ticker):
 
 if __name__ == '__main__':
     generate_csv_and_json('LMT')
+    generate_csv_and_json('AAPL')
+    

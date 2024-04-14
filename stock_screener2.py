@@ -8,6 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import streamlit as st
 from bs4 import BeautifulSoup
+import tensorflow as tf
 
 
        
@@ -161,7 +162,21 @@ def create_model(train_data):
             
         ])
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        return model    
+        return model   
+    
+# CNN model
+def create_cnn_model(train_data):
+    model = tf.keras.models.Sequential([
+        tf.keras.layers.Conv1D(filters=32, kernel_size=3, activation='relu', input_shape=(train_data.shape[1], 1)),
+        tf.keras.layers.MaxPooling1D(pool_size=2),
+        tf.keras.layers.Conv1D(filters=64, kernel_size=3, activation='relu'),
+        tf.keras.layers.MaxPooling1D(pool_size=2),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(1, activation='sigmoid')
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    return cnn_model 
     
 def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator, models=None):
     # Display Filtered Stocks
