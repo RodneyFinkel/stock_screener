@@ -1,0 +1,52 @@
+Category,Attribute,Value
+financial_highlights,Fiscal Year,Fiscal Year Ends,12/31/2023
+financial_highlights,Fiscal Year,Most Recent Quarter  (mrq),3/31/2024
+financial_highlights,Profitability,Profit Margin,14.37%
+financial_highlights,Profitability,Operating Margin  (ttm),5.50%
+financial_highlights,Management Effectiveness,Return on Assets  (ttm),4.72%
+financial_highlights,Management Effectiveness,Return on Equity  (ttm),23.74%
+financial_highlights,Income Statement,Revenue  (ttm),94.75B
+financial_highlights,Income Statement,Revenue Per Share  (ttm),29.80
+financial_highlights,Income Statement,Quarterly Revenue Growth  (yoy),-8.70%
+financial_highlights,Income Statement,Gross Profit  (ttm),--
+financial_highlights,Income Statement,EBITDA,12.26B
+financial_highlights,Income Statement,Net Income Avi to Common  (ttm),13.65B
+financial_highlights,Income Statement,Diluted EPS  (ttm),3.90
+financial_highlights,Income Statement,Quarterly Earnings Growth  (yoy),-55.10%
+financial_highlights,Balance Sheet,Total Cash  (mrq),26.86B
+financial_highlights,Balance Sheet,Total Cash Per Share  (mrq),8.42
+financial_highlights,Balance Sheet,Total Debt  (mrq),9.91B
+financial_highlights,Balance Sheet,Total Debt/Equity  (mrq),15.21%
+financial_highlights,Balance Sheet,Current Ratio  (mrq),1.72
+financial_highlights,Balance Sheet,Book Value Per Share  (mrq),20.19
+financial_highlights,Cash Flow Statement,Operating Cash Flow  (ttm),10.98B
+financial_highlights,Cash Flow Statement,Levered Free Cash Flow  (ttm),-633.12M
+trading_information,Stock Price History,Beta (5Y Monthly),2.44
+trading_information,Stock Price History,52 Week Range 3,3.99%
+trading_information,Stock Price History,S&P 500 52-Week Change 3,22.36%
+trading_information,Stock Price History,52 Week High 3,299.29
+trading_information,Stock Price History,52 Week Low 3,138.80
+trading_information,Stock Price History,50-Day Moving Average 3,175.53
+trading_information,Stock Price History,200-Day Moving Average 3,222.10
+trading_information,Share Statistics,Avg Vol (3 month) 3,101.01M
+trading_information,Share Statistics,Avg Vol (10 day) 3,110.99M
+trading_information,Share Statistics,Shares Outstanding 5,3.19B
+trading_information,Share Statistics,Implied Shares Outstanding 6,3.19B
+trading_information,Share Statistics,Float 8,2.77B
+trading_information,Share Statistics,% Held by Insiders 1,12.98%
+trading_information,Share Statistics,% Held by Institutions 1,45.65%
+trading_information,Share Statistics,Shares Short (4/15/2024) 4,106.65M
+trading_information,Share Statistics,Short Ratio (4/15/2024) 4,1.14
+trading_information,Share Statistics,Short % of Float (4/15/2024) 4,3.84%
+trading_information,Share Statistics,Short % of Shares Outstanding (4/15/2024) 4,3.34%
+trading_information,Share Statistics,Shares Short (prior month 3/15/2024) 4,102.3M
+trading_information,Dividends & Splits,Forward Annual Dividend Rate 4,--
+trading_information,Dividends & Splits,Forward Annual Dividend Yield 4,--
+trading_information,Dividends & Splits,Trailing Annual Dividend Rate 3,0.00
+trading_information,Dividends & Splits,Trailing Annual Dividend Yield 3,0.00%
+trading_information,Dividends & Splits,5 Year Average Dividend Yield 4,--
+trading_information,Dividends & Splits,Payout Ratio 4,0.00%
+trading_information,Dividends & Splits,Dividend Date 3,--
+trading_information,Dividends & Splits,Ex-Dividend Date 4,--
+trading_information,Dividends & Splits,Last Split Factor 2,3:1
+trading_information,Dividends & Splits,Last Split Date 3,8/25/2022

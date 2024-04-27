@@ -54,6 +54,7 @@ def generate_csv_and_json(ticker):
     df.to_csv(f'out/{ticker}.csv', index=False)
     df.to_json(f'out/{ticker}.json', orient='records')
     print(df)
+    
 # def get_sp_tickers():
 #     # Get sp500 ticker and sector
 #     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'

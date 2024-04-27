@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 import yfinance as yf
 
-url = f"https://finance.yahoo.com/quote/BABA/key-statistics?pBABA"
+url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
 metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
             'Beta (5Y Monthly)': 'beta',
