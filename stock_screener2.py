@@ -8,8 +8,6 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import streamlit as st
 from bs4 import BeautifulSoup
-import tensorflow as tf
-
 
        
 # Stock Screener Class
@@ -33,8 +31,7 @@ class StockScreener:
                 filtered_stocks.append(stock)  
         return filtered_stocks
     
-          
-        
+              
    # Train deep learning models on selected stocks
     def train_models(self):
         training_models = st.empty()
@@ -86,7 +83,7 @@ class StockScreener:
     # Create web app for stock screener 
     def create_app(self):
         
-        st.title(':green[SP500 Stock Screener and NN based Predictive Model]')
+        st.title(':blue[SP500 Stock Screener and NN based Predictive Model]')
         
         # Create sidebar for filtering options
         sector_list = sorted(list(set(stock.sector for stock in self.stocks)))

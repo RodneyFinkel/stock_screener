@@ -62,6 +62,8 @@ def generate_csv_and_json(ticker):
     df.to_json(f'out/{ticker}.json', orient='records')
 
 if __name__ == '__main__':
-    generate_csv_and_json('LMT')
-    generate_csv_and_json('AAPL')
+    ticker_list = ['LMT', 'AAPL', 'GE', 'META', 'TSLA', 'MSFT', 'GOOGL']
+    for i in ticker_list:
+        generate_csv_and_json(i)
+    
     
