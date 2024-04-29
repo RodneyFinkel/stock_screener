@@ -89,7 +89,11 @@ def scrape_data(url):
                 value = cols[1].text.strip()
                 data_pre['valuation_measures'][metric] = value
 
-    return data_pre
+    # Activate the traverse_data function here
+    data = traverse_data(data_pre, metric_aliases)
+    
+    return data
+
 
 data = {}
 def traverse_data(data_pre, metric_aliases):
@@ -114,9 +118,8 @@ def save_to_json(data):
 
 
 if __name__ == '__main__':
-    data_pre = scrape_data(url)
-    pprint(data_pre)
-    data = traverse_data(data_pre, metric_aliases)
+    data = scrape_data(url)
     pprint(data)
     save_to_json(data)
+
    
