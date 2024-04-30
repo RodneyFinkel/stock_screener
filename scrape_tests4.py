@@ -4,7 +4,7 @@ from pprint import pprint
 import json
 import os
 
-url = "https://finance.yahoo.com/quote/TSLA/key-statistics?p=TSLA"
+url = "https://finance.yahoo.com/quote/GE/key-statistics?p=GE"
 
 metric_aliases = {
             'Market Cap': 'market_cap',
