@@ -196,26 +196,90 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
     
                
 # Scrape statistics 
+# def scrape_data(url, metric_aliases):
+#     print('initialising scrape_data')
+#     page = requests.get(url, headers=get_headers())
+#     soup = BeautifulSoup(page.content, 'html.parser')
+    
+#     data = {}
+#     # this needs fixing, yfinance changed source
+#     sections = soup.find_all('section', {'data-test': 'qsp-statistics'})
+#     for section in sections:
+#         rows = section.find_all('tr')
+#         for row in rows:
+#             cols = row.find_all('td')
+#             if len(cols) == 2:
+#                 metric = cols[0].text.strip()
+#                 if metric in metric_aliases:
+#                     data[metric_aliases[metric]] = cols[1].text.strip()
+#     print('scrape_data function exit')
+#     return data
+
+# Scrape Statisitics fix
 def scrape_data(url, metric_aliases):
-    print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    data = {}
-    # this needs fixing, yfinance changed source
-    sections = soup.find_all('section', {'data-test': 'qsp-statistics'})
-    for section in sections:
-        rows = section.find_all('tr')
-        for row in rows:
+    data_pre = {'financial_highlights': {}, 'trading_information': {}, 'valuation_measures': {}}
+    
+    # Scrape Financial Highlights Section
+    financial_highlights_section = soup.find('section', class_='svelte-14j5zka')
+    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 svelte-1v51y3z sticky')
+    
+    for card in financial_cards:
+        title = card.find('h3', class_='title font-condensed svelte-1v51y3z clip').text.strip()
+        table_rows = card.find_all('tr')
+        financial_data = {}
+        for row in table_rows:
+            label = row.find('td', class_='label svelte-vaowmx').text.strip()
+            value = row.find('td', class_='value svelte-vaowmx').text.strip()
+            financial_data[label] = value
+        data_pre['financial_highlights'][title] = financial_data
+
+    # Scrape Trading Information Section
+    trading_info_section = soup.find_all('section', class_='svelte-14j5zka')[1]  # Get the second section with the same class
+    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 svelte-1v51y3z sticky')
+
+    for card in trading_cards:
+        title = card.find('h3', class_='title font-condensed svelte-1v51y3z clip').text.strip()
+        table_rows = card.find_all('tr')
+        trading_data = {}
+        for row in table_rows:
+            label = row.find('td', class_='label svelte-vaowmx').text.strip()
+            value = row.find('td', class_='value svelte-vaowmx').text.strip()
+            trading_data[label] = value
+        data_pre['trading_information'][title] = trading_data
+    
+    # Scrape Valuation Measures Section
+    valuation_section = soup.find('section', {'data-testid': 'qsp-statistics'})
+    if valuation_section:
+        valuation_rows = valuation_section.find_all('tr')
+        for row in valuation_rows:
             cols = row.find_all('td')
-            if len(cols) == 2:
+            if len(cols) >= 2:
                 metric = cols[0].text.strip()
-                if metric in metric_aliases:
-                    data[metric_aliases[metric]] = cols[1].text.strip()
-    print('scrape_data function exit')
+                value = cols[1].text.strip()
+                data_pre['valuation_measures'][metric] = value
+
+    # Activate the traverse_data function here
+    data = traverse_data(data_pre, metric_aliases)
+    
     return data
 
-# Scrape Statisitics fix
+
+data = {}
+def traverse_data(data_pre, metric_aliases):
+    for key, value in data_pre.items():
+        if isinstance(value, dict):
+            traverse_data(value, metric_aliases)
+        else:
+            for alias_key, alias_value in metric_aliases.items():
+                if key == alias_key or key == alias_value:
+                    data[alias_value] = value
+                elif value == alias_key or value == alias_value:
+                    data[alias_value] = value
+    print('scrape_data function exit')                
+    return data
 
                 
 ### CACHED FUNCTIONS ###
