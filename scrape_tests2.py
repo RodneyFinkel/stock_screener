@@ -65,3 +65,6 @@ def scrape_data(url, metric_aliases):
                 
 if __name__ == '__main__':
     scrape_data(url, metric_aliases)
+
+
+
