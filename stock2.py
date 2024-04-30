@@ -217,6 +217,7 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
 
 # Scrape Statisitics fix
 def scrape_data(url, metric_aliases):
+    print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())
     soup = BeautifulSoup(page.content, 'html.parser')
     
@@ -263,12 +264,13 @@ def scrape_data(url, metric_aliases):
 
     # Activate the traverse_data function here
     data = traverse_data(data_pre, metric_aliases)
-    
+    print('scrape_data function exit') 
     return data
 
 
 data = {}
 def traverse_data(data_pre, metric_aliases):
+    print('traversing data structure')
     for key, value in data_pre.items():
         if isinstance(value, dict):
             traverse_data(value, metric_aliases)
@@ -277,8 +279,7 @@ def traverse_data(data_pre, metric_aliases):
                 if key == alias_key or key == alias_value:
                     data[alias_value] = value
                 elif value == alias_key or value == alias_value:
-                    data[alias_value] = value
-    print('scrape_data function exit')                
+                    data[alias_value] = value               
     return data
 
                 
