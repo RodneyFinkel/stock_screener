@@ -178,7 +178,8 @@ def create_cnn_model(train_data):
 def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator, models=None):
     
     with open('style.css') as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
+        css = f.read()
+        st.markdown(f'<style>{css}</style>', unsafe_allow_html=True)
     # Display Filtered Stocks
     if len(filtered_stocks) == 0:
         st.write('No stocks match the specified criteria after Screening and Predicting')
@@ -243,7 +244,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             
             #### Display stock graphs ####
             # Set the style to a dark background
-            plt.style.use('Solarize_Light2')
+            plt.style.use('dark_background')
 
             # Plot Closing Price    
             fig, ax = plt.subplots(4, 1, figsize=(20, 18))
@@ -251,7 +252,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price', color='white')  # Specify title color
             ax[0].set_xlabel('Date', color='white')  # Specify xlabel color
             ax[0].set_ylabel('Price', color='white')  # Specify ylabel color
-            ax[0].grid(True, color='black', linestyle='-')  # Add gridlines
+            ax[0].grid(True, color='black', linestyle='--')  # Add gridlines
             ax[0].set_facecolor('white')  # Set background color
             ax[0].tick_params(axis='x', colors='white')  # Set x-axis tick color
             ax[0].tick_params(axis='y', colors='white')  # Set y-axis tick color
@@ -284,7 +285,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages', color='white')
             ax[3].set_xlabel('Date_altered', color='white')
             ax[3].set_ylabel('Price', color='white')
-            ax[3].grid(True, color='black', linestyle='-')  # Add gridlines
+            ax[3].grid(True, color='black', linestyle='--')  # Add gridlines
             ax[3].set_facecolor('white')  # Set background color
             ax[3].tick_params(axis='x', colors='white')  # Set x-axis tick color
             ax[3].tick_params(axis='y', colors='white')  # Set y-axis tick color

@@ -1,9 +1,9 @@
-Date,Article sentiment,Article title,link,publisher
-2024-05-04T13:00:10.000Z,Nan too long,,,
-2024-05-03T17:21:00.000Z,Nan too long,,,
-None,neutral,Lockheed Decision Sends This Satellite Stock Tumbling 20%,https://finance.yahoo.com/m/fe99f2e1-558f-3dc2-8e8d-33175867ef0c/lockheed-decision-sends-this.html,Barrons.com
-2024-05-03T11:35:34.000Z,Nan too long,,,
-2024-05-03T11:26:17.000Z,Nan too long,,,
-None,neutral,Terran Orbital Shares Fall Pre-Bell After Lockheed Martin Scraps Buyout Bid,https://finance.yahoo.com/news/terran-orbital-shares-fall-pre-100354464.html,MT Newswires
-2024-05-02T20:41:00.000Z,Nan too long,,,
-2024-05-02T14:07:00.000Z,Nan too long,,,
+Date,Article title,link,publisher,Article sentiment
+None,Want Decades of Passive Income? 3 Stocks to Buy Now and Hold Forever.,https://finance.yahoo.com/m/2a1548ae-9837-3b44-a632-86b609b5ca74/want-decades-of-passive.html,Motley Fool,positive
+None,How Lockheed Martin Crushed Its Q1 Earnings Report,https://finance.yahoo.com/m/ee889a0a-5828-3c67-ab25-8c933fff8598/how-lockheed-martin-crushed.html,Motley Fool,positive
+2024-05-04T13:00:10.000Z,,,,Nan too long
+2024-05-03T17:21:00.000Z,,,,Nan too long
+None,Lockheed Decision Sends This Satellite Stock Tumbling 20%,https://finance.yahoo.com/m/fe99f2e1-558f-3dc2-8e8d-33175867ef0c/lockheed-decision-sends-this.html,Barrons.com,positive
+2024-05-03T11:35:34.000Z,,,,Nan too long
+2024-05-03T11:26:17.000Z,,,,Nan too long
+None,Terran Orbital Shares Fall Pre-Bell After Lockheed Martin Scraps Buyout Bid,https://finance.yahoo.com/news/terran-orbital-shares-fall-pre-100354464.html,MT Newswires,positive
