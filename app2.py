@@ -7,7 +7,7 @@ if __name__ == '__main__':
     
     # Streamlit Config
     st.set_page_config(page_title='Stock Screener', page_icon=':chart_with_upward_trend:')
-    
+
     filters = []
     
     sp500 = get_sp_tickers()
@@ -18,4 +18,4 @@ if __name__ == '__main__':
     
     # Create streamlit app
     screener.create_app()
-
+   

@@ -83,8 +83,8 @@ class StockScreener:
     # Create web app for stock screener 
     def create_app(self):
         
-        st.title(':blue[SP500 Stock Screener and NN based Predictive Model]')
-        
+        st.title(':blue[S&P500 Stock Screener with NN based Predictive Model]')
+        st.text('Select Stocks News aggregator with article sentiment analysis')
         # Create sidebar for filtering options
         sector_list = sorted(list(set(stock.sector for stock in self.stocks)))
         selected_sector = st.sidebar.selectbox('Sector', ['All'] + sector_list) # parameters: name of the selectbox, choices within the selectbox
@@ -139,7 +139,7 @@ class StockScreener:
             display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator)
             
         # Create 'Train and Predict Models' button
-        if st.sidebar.button('Train and Predict'):
+        if st.sidebar.button('NN Train and Predict'):
             # Train models for each filtered stock
             filtered_stocks = self.train_models()
             # Predict Models
@@ -176,9 +176,12 @@ def create_cnn_model(train_data):
     return cnn_model 
     
 def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator, models=None):
+    
+    with open('style.css') as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
     # Display Filtered Stocks
     if len(filtered_stocks) == 0:
-        st.write('No stocks match the specified criteria after Predicting')
+        st.write('No stocks match the specified criteria after Screening and Predicting')
     else:
         filtered_tickers = [stock.ticker for stock in filtered_stocks]
         tabs = st.tabs(filtered_tickers)
@@ -240,7 +243,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             
             #### Display stock graphs ####
             # Set the style to a dark background
-            plt.style.use('dark_background')
+            plt.style.use('Solarize_Light2')
 
             # Plot Closing Price    
             fig, ax = plt.subplots(4, 1, figsize=(20, 18))
@@ -248,6 +251,10 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price', color='white')  # Specify title color
             ax[0].set_xlabel('Date', color='white')  # Specify xlabel color
             ax[0].set_ylabel('Price', color='white')  # Specify ylabel color
+            ax[0].grid(True, color='black', linestyle='-')  # Add gridlines
+            ax[0].set_facecolor('white')  # Set background color
+            ax[0].tick_params(axis='x', colors='white')  # Set x-axis tick color
+            ax[0].tick_params(axis='y', colors='white')  # Set y-axis tick color
 
             # Plot Bollinger Bands
             ax[1].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['Close'][-1095:], label='Close Price', color='white')
@@ -257,12 +264,17 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[1].set_title(f'{filtered_stocks[n].ticker}: Bollinger Bands', color='white')
             ax[1].set_xlabel('Date_altered', color='white')
             ax[1].set_ylabel('Price', color='white')
+            ax[1].grid(True, color='black', linestyle='--')  # Add gridlines
+            ax[1].set_facecolor('white')  # Set background color
+            ax[1].tick_params(axis='x', colors='white')  # Set x-axis tick color
+            ax[1].tick_params(axis='y', colors='white')  # Set y-axis tick color
 
             # Plot MACD
             ax[2].plot(filtered_stocks[n].data.index[-1095:], filtered_stocks[n].data['MACD'][-1095:], label='MACD', color='cyan')  # Specify MACD color
             ax[2].set_title(f'{filtered_stocks[n].ticker}: MACD', color='white')
             ax[2].set_xlabel('Date', color='white')
             ax[2].set_ylabel('MACD', color='white')
+            ax[2].grid(True, color='black', linestyle='--')  # Add gridlines
 
             # Plot 20-day and 50-day moving averages
             ax[3].plot(filtered_stocks[n].data.index[-730:], filtered_stocks[n].data['Close'][-730:], label='Close Price', color='white')
@@ -272,11 +284,15 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[3].set_title(f'{filtered_stocks[n].ticker}: Moving Averages', color='white')
             ax[3].set_xlabel('Date_altered', color='white')
             ax[3].set_ylabel('Price', color='white')
+            ax[3].grid(True, color='black', linestyle='-')  # Add gridlines
+            ax[3].set_facecolor('white')  # Set background color
+            ax[3].tick_params(axis='x', colors='white')  # Set x-axis tick color
+            ax[3].tick_params(axis='y', colors='white')  # Set y-axis tick color
 
             # Adjusting the background color of subplots
-            dark_grey = '#333333' 
+            bkg_color = '#333333' 
             for a in ax:
-                a.set_facecolor(dark_grey)  # Set subplot background color
+                a.set_facecolor(bkg_color)  # Set subplot background color
 
             # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
             tabs[n].pyplot(fig)
@@ -289,12 +305,13 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
                 ax[0].plot(history.history['loss'])
                 ax[0].set_title(f"{filtered_stocks[n].ticker} Training Loss")
                 ax[0].set_ylabel("Loss")
-                
+                ax[0].grid(True, color='black', linestyle='--')  # Add gridlines
                 # Plot training accuracy
                 ax[1].plot(history.history['accuracy'])
                 ax[1].set_title(f"{filtered_stocks[n].ticker} Training Accuracy")
                 ax[1].set_xlabel("Epoch")
                 ax[1].set_ylabel("Accuracy")
+                ax[1].grid(True, color='black', linestyle='--')  # Add gridlines
                 
                 # Show the plot in the streamlit app
                 dark_grey = '#333333' 

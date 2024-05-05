@@ -1,0 +1,22 @@
+/* Change background color of metrics */
+.streamlit-metric {
+    background-color: #add8e6; /* Light pastel blue */
+    border: 2px solid #ffffff; /* Border color */
+}
+
+/* Change text color and size of metric names */
+.streamlit-metric-name {
+    color: #20b2aa; /* Light pastel blue */
+    font-size: 24px; /* Larger font size for metric names */
+}
+
+/* Change text color and size of metric values */
+.streamlit-metric-value {
+    color: #ffff00; /* Yellow */
+    font-size: 18px; /* Smaller font size for metric values */
+}
+
+/* Add padding to metrics */
+.streamlit-metric {
+    padding: 10px;
+}
