@@ -1,10 +1,13 @@
+from sentiment_analysis import (get_ticker_news_sentiment, generate_csv_and_json)
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
 import json
 import os
 
-url = "https://finance.yahoo.com/quote/GE/key-statistics?p=GE"
+ticker_symbol = input("Enter the ticker symbol you would like to scrape: ")
+# Construct the URL with the provided ticker symbol
+url = f"https://finance.yahoo.com/quote/{ticker_symbol}/key-statistics?p={ticker_symbol}"
 
 metric_aliases = {
             'Market Cap': 'market_cap',
@@ -121,5 +124,5 @@ if __name__ == '__main__':
     data = scrape_data(url)
     pprint(data)
     save_to_json(data)
-
+    generate_csv_and_json(ticker_symbol)
    
