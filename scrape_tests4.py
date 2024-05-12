@@ -1,4 +1,5 @@
 from sentiment_analysis import (get_ticker_news_sentiment, generate_csv_and_json)
+from metric_graphs import get_sp500_stocks
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
@@ -125,4 +126,5 @@ if __name__ == '__main__':
     pprint(data)
     save_to_json(data)
     generate_csv_and_json(ticker_symbol)
+    get_sp500_stocks(ticker_symbol)
    

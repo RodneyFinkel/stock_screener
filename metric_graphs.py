@@ -8,47 +8,25 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
-def get_sp_tickers():
-    # Get sp500 ticker and sector
-    ticker_symbol = input('Please select ticker symbol: ')
-    url = f"https://finance.yahoo.com/quote/{ticker_symbol}/key-statistics?p={ticker_symbol}"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    table = soup.find('table', {'class': 'wikitable sortable'})
-    rows = table.find_all('tr')[1:] # skip the header row
+
+
+ticker_symbol = input('Please select ticker symbol: ')
+
+def get_sp500_stocks(ticker_symbol):
     
-    sp500 = [] 
-    for row in rows:
-        cells = row.find_all('td')
-        ticker = cells[0].text.strip()
-        company = cells[1].text.strip()
-        sector = cells[3].text.strip()
-        sp500.append({'ticker': ticker, 'company': company, 'sector': sector})  
-         
-    return sp500
-
-
-
-def get_sp500_stocks(sp500):
     sp500_stocks = []
-    for stock in sp500:
-        #      try:
-                print(stock['ticker'])
-                price = get_stock_price2(stock['ticker'])
-                print(price)
-                data = get_historical(stock['ticker'])
-                technical_data, prices  = add_technical_indicators(data)
-                print(prices.head()) 
-                print(prices.shape)
-                prices_mod = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
-                print(prices_mod)
-                sp500_stocks.append((stock['ticker'], stock['sector'], price))
-                plot_technical_indicators(prices, stock['ticker'])
+    print('ticker')
+    price = get_stock_price2(ticker_symbol)
+    print(price)
+    data = get_historical(ticker_symbol)
+    technical_data, prices  = add_technical_indicators(data)
+    print(prices.head()) 
+    print(prices.shape)
+    prices_mod = prices[['MA20', 'MA50', 'RSI', 'MACD', 'UpperBand', 'LowerBand',]].iloc[-1, :]
+    print(prices_mod)
+    sp500_stocks.append((ticker_symbol, price))
+    plot_technical_indicators(prices, ticker_symbol)
                 
-                
-        #      except:
-                    #print((f"There was an issue with {stock['ticker']}."))
-                   
     return sp500_stocks               
 
 
@@ -71,7 +49,7 @@ def get_stock_price2(ticker):
  
 def get_historical(ticker):
     stock = yf.Ticker(ticker)
-    history = stock.history(start='2019-01-01', end='2023-09-24') 
+    history = stock.history(start='2019-01-01', end='2024-04-24') 
     return history
 
 
@@ -131,39 +109,39 @@ def plot_technical_indicators(prices, ticker):
 
 
     # Set a dark theme
-    # template = "plotly_dark"
+    template = "plotly_dark"
     
-    # # Create a subplot figure
-    # fig = make_subplots(rows=2, cols=1, shared_xaxes=True, subplot_titles=[
-    #     f'{ticker}: Moving Averages',
-    #     f'{ticker}: Bollinger Bands'
-    # ])
+    # Create a subplot figure
+    fig = make_subplots(rows=2, cols=1, shared_xaxes=True, subplot_titles=[
+        f'{ticker}: Moving Averages',
+        f'{ticker}: Bollinger Bands'
+    ])
 
-    # # Plot 20-day and 50-day moving averages
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=1, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], mode='lines', name='20-day MA'), row=1, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA50'], mode='lines', name='50-day MA'), row=1, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Moving Averages'), row=1, col=1)
+    # Plot 20-day and 50-day moving averages
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=1, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], mode='lines', name='20-day MA'), row=1, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['MA50'], mode='lines', name='50-day MA'), row=1, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['MA20'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Moving Averages'), row=1, col=1)
 
-    # # Plot Bollinger Bands
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=2, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], mode='lines', name='Upper Band'), row=2, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['LowerBand'], mode='lines', name='Lower Band'), row=2, col=1)
-    # fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Bollinger Bands'), row=2, col=1)
+    # Plot Bollinger Bands
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['Close'], mode='lines', name='Close Price'), row=2, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], mode='lines', name='Upper Band'), row=2, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['LowerBand'], mode='lines', name='Lower Band'), row=2, col=1)
+    fig.add_trace(go.Scatter(x=prices.index, y=prices['UpperBand'], fill='tonexty', fillcolor='rgba(128,128,128,0.3)', name='Bollinger Bands'), row=2, col=1)
 
-    # # Update layout for better appearance
-    # fig.update_layout(
-    #     title=f'{ticker} Technical Indicators',
-    #     xaxis_rangeslider_visible=False,
-    #     template=template,
-    #     height=800,
-    #     showlegend=False,
-    #     paper_bgcolor='rgba(0,0,0,0)',
-    #     plot_bgcolor='rgba(0,0,0,0)',
-    # )
+    # Update layout for better appearance
+    fig.update_layout(
+        title=f'{ticker} Technical Indicators',
+        xaxis_rangeslider_visible=False,
+        template=template,
+        height=800,
+        showlegend=False,
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+    )
 
-    # # Show the figure
-    # fig.show()
+    # Show the figure
+    fig.show()
 
     # Plot RSI
     ax[1].plot(prices.index, prices['RSI'], label='RSI')
@@ -198,6 +176,5 @@ def plot_technical_indicators(prices, ticker):
     
     
 if __name__ == "__main__":
-    sp500 = get_sp_tickers()
-    get_sp500_stocks(sp500)
+    get_sp500_stocks(ticker_symbol)
     
