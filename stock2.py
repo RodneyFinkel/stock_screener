@@ -56,7 +56,7 @@ class Stock:
             'Return on Equity  (ttm)': 'return_on_equity',
             'Revenue  (ttm)': 'revenue',
             'Revenue Per Share  (ttm)': 'revenue_per_share',
-            'Gross Profit  (ttm)': 'gross_profit',
+            #'Gross Profit  (ttm)': 'gross_profit',
             'EBITDA': 'ebitda',
             'Net Income Avi to Common  (ttm)': 'net_income',
             'Diluted EPS  (ttm)': 'eps',

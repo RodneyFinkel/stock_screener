@@ -125,6 +125,6 @@ if __name__ == '__main__':
     data = scrape_data(url)
     pprint(data)
     save_to_json(data)
-    generate_csv_and_json(ticker_symbol)
-    get_sp500_stocks(ticker_symbol)
+    generate_csv_and_json(ticker_symbol) # from sentiment_analysis.py
+    get_sp500_stocks(ticker_symbol) # from metric_graphs.py
    
