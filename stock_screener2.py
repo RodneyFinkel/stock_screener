@@ -245,8 +245,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             #### Display stock graphs ####
             # Set the style to a dark background
             plt.style.use('dark_background')
-
-            # Plot Closing Price    
+             
             fig, ax = plt.subplots(4, 1, figsize=(20, 18))
             ax[0].plot(filtered_stocks[n].data.index, filtered_stocks[n].data['Close'], color='white')  # Specify line color
             ax[0].set_title(f'{filtered_stocks[n].ticker} Close Price', color='white')  # Specify title color
@@ -291,10 +290,14 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
             ax[3].tick_params(axis='y', colors='white')  # Set y-axis tick color
 
             # Adjusting the background color of subplots
-            bkg_color = '#333333' 
+            bkg_color = '#333333'
             for a in ax:
                 a.set_facecolor(bkg_color)  # Set subplot background color
 
+            # Set gridlines color to white
+            plt.gca().yaxis.grid(color='white')
+
+            plt.tight_layout()
             # Streamlit's pyplot function to display the matplotlib figure (fig) inside the current tab (tabs[n]) of the Streamlit app
             tabs[n].pyplot(fig)
             

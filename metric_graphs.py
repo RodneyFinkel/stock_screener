@@ -94,11 +94,11 @@ def add_technical_indicators(data):
 def plot_technical_indicators(prices, ticker):
     
     # Set background color to an even darker grey
-    # plt.style.use('bmh')
-    plt.rcParams['figure.facecolor'] = '#333333'  # Set figure background color
-    plt.rcParams['axes.facecolor'] = '#333333'    # Set axes background color
+    #plt.style.use('bmh')
+    plt.rcParams['figure.facecolor'] = '#555555'  # Set figure background color
+    plt.rcParams['axes.facecolor'] = '#555555'    # Set axes background color
     plt.rcParams['grid.color'] = 'white'          # Set gridlines color
-    
+     
     fig, ax = plt.subplots(4, 1, figsize=(16, 10), dpi=100)
 
     # Plot 20-day and 50-day moving averages
@@ -141,9 +141,6 @@ def plot_technical_indicators(prices, ticker):
     ax[3].set_ylabel('Price', color='white')  # Set ylabel color to white
     ax[3].grid(True, color='black', linestyle='--')  # Add gridlines
     ax[3].legend()
-
-    # Set gridlines color to white
-    plt.gca().yaxis.grid(color='white')
 
     plt.tight_layout()
     plt.show()
