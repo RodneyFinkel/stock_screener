@@ -8,10 +8,8 @@ import os
 import json
 
 def get_ticker_news_sentiment(ticker):
-   
     ticker_news = yf.Ticker(ticker)
     news_list = ticker_news.get_news()
-    
     extractor = Goose()
     pipe = pipeline("text-classification", model="ProsusAI/finbert")
     
@@ -29,8 +27,7 @@ def get_ticker_news_sentiment(ticker):
             data.append({
                 'Date':f'{date}',
                 'Article sentiment':'Nan too long'
-            })
-            
+            })    
         else:
             result = pipe(text)
             print(result)

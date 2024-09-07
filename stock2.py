@@ -187,30 +187,30 @@ def scrape_data(url, metric_aliases):
     data_pre = {'financial_highlights': {}, 'trading_information': {}, 'valuation_measures': {}}
     
     # Scrape Financial Highlights Section
-    financial_highlights_section = soup.find('section', class_='svelte-14j5zka')
-    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 svelte-1v51y3z sticky')
+    financial_highlights_section = soup.find('section', class_='yf-14j5zka')
+    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
     
     for card in financial_cards:
-        title = card.find('h3', class_='title font-condensed svelte-1v51y3z clip').text.strip()
+        title = card.find('h3', class_='title font-condensed yf-1v51y3z clip').text.strip()
         table_rows = card.find_all('tr')
         financial_data = {}
         for row in table_rows:
-            label = row.find('td', class_='label svelte-vaowmx').text.strip()
-            value = row.find('td', class_='value svelte-vaowmx').text.strip()
+            label = row.find('td', class_='label yf-vaowmx').text.strip()
+            value = row.find('td', class_='value yf-vaowmx').text.strip()
             financial_data[label] = value
         data_pre['financial_highlights'][title] = financial_data
 
     # Scrape Trading Information Section
-    trading_info_section = soup.find_all('section', class_='svelte-14j5zka')[1]  # Get the second section with the same class
-    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 svelte-1v51y3z sticky')
+    trading_info_section = soup.find_all('section', class_='yf-14j5zka')[1]  # Get the second section with the same class
+    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
 
     for card in trading_cards:
-        title = card.find('h3', class_='title font-condensed svelte-1v51y3z clip').text.strip()
+        title = card.find('h3', class_='title font-condensed yf-1v51y3z clip').text.strip()
         table_rows = card.find_all('tr')
         trading_data = {}
         for row in table_rows:
-            label = row.find('td', class_='label svelte-vaowmx').text.strip()
-            value = row.find('td', class_='value svelte-vaowmx').text.strip()
+            label = row.find('td', class_='label yf-vaowmx').text.strip()
+            value = row.find('td', class_='value yf-vaowmx').text.strip()
             trading_data[label] = value
         data_pre['trading_information'][title] = trading_data
     

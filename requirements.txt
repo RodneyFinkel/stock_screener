@@ -54,6 +54,7 @@ packaging==23.2
 pandas==2.1.1
 peewee==3.16.3
 Pillow==10.0.1
+platformdirs==4.2.2
 plotly==5.18.0
 protobuf==4.24.4
 pyahocorasick==2.1.0
@@ -104,5 +105,5 @@ watchdog==3.0.0
 webencodings==0.5.1
 Werkzeug==3.0.0
 wrapt==1.14.1
-yfinance==0.2.33
+yfinance==0.2.43
 zipp==3.17.0
