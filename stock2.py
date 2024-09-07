@@ -188,7 +188,7 @@ def scrape_data(url, metric_aliases):
     
     # Scrape Financial Highlights Section
     financial_highlights_section = soup.find('section', class_='yf-14j5zka')
-    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
+    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
     
     for card in financial_cards:
         title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
@@ -202,7 +202,7 @@ def scrape_data(url, metric_aliases):
 
     # Scrape Trading Information Section
     trading_info_section = soup.find_all('section', class_='yf-14j5zka')[1]  # Get the second section with the same class
-    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
+    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
 
     for card in trading_cards:
         title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
