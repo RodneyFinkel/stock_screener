@@ -191,7 +191,7 @@ def scrape_data(url, metric_aliases):
     financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
     
     for card in financial_cards:
-        title = card.find('h3', class_='title font-condensed yf-1v51y3z clip').text.strip()
+        title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
         table_rows = card.find_all('tr')
         financial_data = {}
         for row in table_rows:
@@ -205,7 +205,7 @@ def scrape_data(url, metric_aliases):
     trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-1v51y3z sticky')
 
     for card in trading_cards:
-        title = card.find('h3', class_='title font-condensed yf-1v51y3z clip').text.strip()
+        title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
         table_rows = card.find_all('tr')
         trading_data = {}
         for row in table_rows:
