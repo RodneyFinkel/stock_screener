@@ -1,3 +1,4 @@
+from metric_graphs import get_sp500_stocks
 from finvizfinance.screener.overview import Overview
 from transformers import pipeline
 import yfinance as yf
@@ -97,5 +98,7 @@ if __name__ == '__main__':
     ticker_list = get_undervalued_stocks()
     for i in ticker_list:
         generate_csv_and_json(i)
+        get_sp500_stocks(i)
+        
     
     
