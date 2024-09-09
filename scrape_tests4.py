@@ -1,4 +1,4 @@
-from sentiment_analysis import (get_ticker_news_sentiment, generate_csv_and_json)
+from sentiment_analysis import (get_undervalued_stocks, get_ticker_news_sentiment, generate_csv_and_json)
 from metric_graphs import get_sp500_stocks
 import requests
 from bs4 import BeautifulSoup
