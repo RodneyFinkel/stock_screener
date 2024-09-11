@@ -1,8 +1,8 @@
 Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
-ACTG,Acacia Research Corp,Industrials,Business Equipment & Supplies,USA,470780000.0,8.21,4.69,-0.0085,274481.0
-CHRD,Chord Energy Corp,Energy,Oil & Gas E&P,USA,8310000000.000001,6.52,134.37,-0.022000000000000002,765912.0
-CNX,CNX Resources Corp,Energy,Oil & Gas E&P,USA,4090000000.0,9.27,27.03,-0.0131,3080347.0
-STCN,Steel Connect Inc,Industrials,Integrated Freight & Logistics,USA,703250000.0,3.68,11.54,0.049100000000000005,4176.0
-STRT,Strattec Security Corp.,Consumer Cyclical,Auto Parts,USA,141840000.0,8.57,34.85,-0.0161,25748.0
-TCBX,Third Coast Bancshares Inc,Financial,Banks - Regional,USA,344760000.0,13.09,25.22,-0.0051,53930.0
-VTLE,Vital Energy Inc.,Energy,Oil & Gas E&P,USA,1080000000.0,3.23,28.4,-0.071,2119613.0
+ACTG,Acacia Research Corp,Industrials,Business Equipment & Supplies,USA,471790000.0,8.23,4.7,0.0021,244237.0
+CHRD,Chord Energy Corp,Energy,Oil & Gas E&P,USA,8240000000.0,6.46,133.11,-0.009399999999999999,903089.0
+CNX,CNX Resources Corp,Energy,Oil & Gas E&P,USA,4040000000.0,9.16,26.72,-0.0115,2586967.0
+STCN,Steel Connect Inc,Industrials,Integrated Freight & Logistics,USA,666070000.0,3.48,10.93,-0.0529,15878.0
+STRT,Strattec Security Corp.,Consumer Cyclical,Auto Parts,USA,142250000.0,8.59,34.95,0.0029,15834.0
+TCBX,Third Coast Bancshares Inc,Financial,Banks - Regional,USA,349540000.0,13.27,25.57,0.0139,31898.0
+VTLE,Vital Energy Inc.,Energy,Oil & Gas E&P,USA,1040000000.0,3.11,27.36,-0.0366,2084684.0
