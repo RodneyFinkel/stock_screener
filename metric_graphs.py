@@ -9,7 +9,7 @@ from plotly.subplots import make_subplots
 
 
 
-ticker_symbol = input('Please select ticker symbol: ')
+#ticker_symbol = input('Please select ticker symbol: ')
 
 def get_sp500_stocks(ticker_symbol):
     
