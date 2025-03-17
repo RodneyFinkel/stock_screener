@@ -50,7 +50,8 @@ def scrape_data(url, metric_aliases):
     # pprint(soup)
     data = {}
     
-    sections = soup.find_all('section', {'data-testid':'qsp-statistics'})
+    # Find all sections with the specified data-testid
+    sections = soup.find_all('section', {'data-testid': 'card-container'})
     for section in sections:
         rows = section.find_all('tr')
         for row in rows:
@@ -59,6 +60,7 @@ def scrape_data(url, metric_aliases):
                 metric = cols[0].text.strip()
                 if metric in metric_aliases:
                     data[metric_aliases[metric]] = cols[1].text.strip()
+                    
     print('scrape_data function exit')
     pprint(data)
     return data
