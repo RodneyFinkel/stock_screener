@@ -10,6 +10,7 @@ import os
 import json
 
 
+
 def get_undervalued_stocks():
     foverview = Overview()
     filters_dict = {'Debt/Equity':'Under 1', 
@@ -51,15 +52,21 @@ def get_ticker_news_sentiment(ticker):
     
     data = []
     for dict in news_list:
-        title = dict['title']
-        response = get(dict['link'])
-        article = extractor.extract(raw_html=response.content)
-        text = article.cleaned_text
-        date = article.publish_date
-        #thumbnail = dict['thumbnail']['resolutions'][1]
-        publisher = dict['publisher']
-        link = dict['link']
-        if len(text) > 512:
+        content = dict.get('content', {})
+        if 'title' in content and 'canonicalUrl' in content and 'provider' in content:
+            title = content['title']
+            link = content['canonicalUrl']['url']
+            publisher = content['provider']['displayName']
+            response = get(link)
+            # title = dict['title']
+            # response = get(dict['link'])
+            article = extractor.extract(raw_html=response.content)
+            text = article.cleaned_text
+            date = article.publish_date
+            #thumbnail = dict['thumbnail']['resolutions'][1]
+            # publisher = dict['publisher']
+            # link = dict['link']
+            # if len(text) > 512:
             data.append({
                 'Date':f'{date}',
                 'Article sentiment':'Nan too long'

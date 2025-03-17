@@ -333,27 +333,55 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
     st.write(pd.DataFrame(table_data, columns=table_columns))
     
 
-## GET SP 500 STOCK DATA ##
+## GET SP 500 STOCK DATA ## FIXED WITH IMPORT
 
 def get_sp_tickers():
-    # Get sp500 ticker and sector
+    # Wikipedia URL for S&P 500 companies
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+
+    # Get the webpage content
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    
-    table = soup.find('table', {'class': 'wikitable sortable'})
-    rows = table.find_all('tr')[1:] # skip the header row
-    
-    sp500 = []
-    
-    for row in rows:
-        cells = row.find_all('td')
-        ticker = cells[0].text.strip()
-        company = cells[1].text.strip()
-        sector = cells[3].text.strip()
-        sp500.append({'ticker': ticker, 'company': company, 'sector': sector})
-        
+
+    # Find the correct table by ID
+    table = soup.find('table', {'id': 'constituents'})
+
+    if not table:
+        print("Table not found")
+        return None
+
+    # Read table into pandas DataFrame
+    df = pd.read_html(str(table))[0]
+
+    # Rename columns to match desired naming
+    df.rename(columns={'Symbol': 'ticker', 'Security': 'company', 'GICS Sub-Industry': 'sector'}, inplace=True)
+
+    # Select only relevant columns: 'ticker', 'company', 'sector'
+    df = df[['ticker', 'company', 'sector']]
+
+    # Convert DataFrame to list of dictionaries
+    sp500 = df.to_dict(orient='records')
+
     return sp500
+    
+    # # Get sp500 ticker and sector
+    # url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
+    # response = requests.get(url)
+    # soup = BeautifulSoup(response.content, 'html.parser')
+    
+    # table = soup.find('table', {'class': 'wikitable sortable'})
+    # rows = table.find_all('tr')[1:] # skip the header row
+    
+    # sp500 = []
+    
+    # for row in rows:
+    #     cells = row.find_all('td')
+    #     ticker = cells[0].text.strip()
+    #     company = cells[1].text.strip()
+    #     sector = cells[3].text.strip()
+    #     sp500.append({'ticker': ticker, 'company': company, 'sector': sector})
+        
+    # return sp500
 
 # Run screener for all sp500 tickers
 # @st.cache_data

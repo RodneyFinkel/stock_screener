@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import time
 
 
 def get_headers():
@@ -17,16 +18,18 @@ def get_sp_tickers():
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    table = soup.find('table', {'class': 'wikitable sortable'})
+    table = soup.find('table', {'class': 'wikitable'})
     rows = table.find_all('tr')[1:] # skip the header row
+   
     
     sp500 = [] 
     for row in rows:
-        cells = row.find_all('td')
-        ticker = cells[0].text.strip()
-        company = cells[1].text.strip()
-        sector = cells[3].text.strip()
-        sp500.append({'ticker': ticker, 'company': company, 'sector': sector})  
+        if len(row) > 0:
+            cells = row.find_all('td')
+            ticker = cells[0].text.strip()
+            company = cells[1].text.strip()
+            sector = cells[2].text.strip()
+            sp500.append({'ticker': ticker, 'company': company, 'sector': sector})  
          
     return sp500
 

@@ -47,7 +47,7 @@ def scrape_data(url, metric_aliases):
     print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())
     soup = BeautifulSoup(page.content, 'html.parser')
-    pprint(soup)
+    # pprint(soup)
     data = {}
     
     sections = soup.find_all('section', {'data-testid':'qsp-statistics'})
