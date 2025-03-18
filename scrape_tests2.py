@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
 import json
+import pandas as pd
+from pandas_solution import get_sp500_companies
 
 url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
 metric_aliases = {
@@ -77,5 +79,6 @@ def save_data_to_file(data, filename):
     print(f'Data saved to {filename}')
 
 if __name__ == '__main__':
+    sp500_df = get_sp500_companies()
     scraped_data = scrape_data(url, metric_aliases)
     save_data_to_file(scraped_data, 'scrape_tests2.json')
