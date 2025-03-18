@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
 import yfinance as yf
+import json
 
 url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
 metric_aliases = {
@@ -20,23 +21,23 @@ metric_aliases = {
             'Short Ratio (Jan 30, 2023) 4': 'short_ratio',
             'Payout Ratio 4': 'payout_ratio',
             'Profit Margin': 'profit_margin',
-            'Operating Margin (ttm)': 'operating_margin',
-            'Return on Assets (ttm)': 'return_on_assets',
-            'Return on Equity (ttm)': 'return_on_equity',
-            'Revenue (ttm)': 'revenue',
-            'Revenue Per Share (ttm)': 'revenue_per_share',
-            'Gross Profit (ttm)': 'gross_profit',
-            'EBITDA ': 'ebitda',
-            'Net Income Avi to Common (ttm)': 'net_income',
-            'Diluted EPS (ttm)': 'eps',
-            'Total Cash (mrq)': 'total_cash',
-            'Total Cash Per Share (mrq)': 'cash_per_share',
-            'Total Debt (mrq)': 'total_debt',
-            'Total Debt/Equity (mrq)': 'debt_to_equity',
-            'Current Ratio (mrq)': 'current_ratio',
-            'Book Value Per Share (mrq)': 'book_value_per_share',
-            'Operating Cash Flow (ttm)': 'operating_cash_flow',
-            'Levered Free Cash Flow (ttm)': 'levered_free_cash_flow'
+            'Operating Margin  (ttm)': 'operating_margin',
+            'Return on Assets  (ttm)': 'return_on_assets',
+            'Return on Equity  (ttm)': 'return_on_equity',
+            'Revenue  (ttm)': 'revenue',
+            'Revenue Per Share  (ttm)': 'revenue_per_share',
+            'Gross Profit  (ttm)': 'gross_profit',
+            'EBITDA': 'ebitda',
+            'Net Income Avi to Common  (ttm)': 'net_income',
+            'Diluted EPS  (ttm)': 'eps',
+            'Total Cash  (mrq)': 'total_cash',
+            'Total Cash Per Share  (mrq)': 'cash_per_share',
+            'Total Debt  (mrq)': 'total_debt',
+            'Total Debt/Equity  (mrq)': 'debt_to_equity',
+            'Current Ratio  (mrq)': 'current_ratio',
+            'Book Value Per Share  (mrq)': 'book_value_per_share',
+            'Operating Cash Flow  (ttm)': 'operating_cash_flow',
+            'Levered Free Cash Flow  (ttm)': 'levered_free_cash_flow'
         }
 
 def get_headers():
@@ -50,23 +51,39 @@ def scrape_data(url, metric_aliases):
     # pprint(soup)
     data = {}
     
-    # Find all sections with the specified data-testid
-    sections = soup.find_all('section', {'data-testid': 'card-container'})
+    # Find all sections with the specified data-testidqsp
+    sections = soup.find_all('section', class_='card small tw-p-0 yf-ispmdb sticky noBackGround')
+    
     for section in sections:
-        rows = section.find_all('tr')
+        title_tag = section.find('h3', class_='title font-condensed yf-ispmdb clip')
+        if not title_tag:
+            continue
+        title = title_tag.text.strip()
+        
+        data[title] = {}
+        rows = section.find_all('tr', class_='row yf-vaowmx')
+        
         for row in rows:
-            cols = row.find_all('td')
-            if len(cols) == 2:
-                metric = cols[0].text.strip()
-                if metric in metric_aliases:
-                    data[metric_aliases[metric]] = cols[1].text.strip()
+            label_tag = row.find('td', class_='label yf-vaowmx')
+            value_tag = row.find('td', class_='value yf-vaowmx')
+            
+            if label_tag and value_tag:
+                label = label_tag.text.strip()
+                value = value_tag.text.strip()
+                if label in metric_aliases:
+                    alias = metric_aliases[label]
+                    data[alias] = value
                     
     print('scrape_data function exit')
     pprint(data)
     return data
-                
+
+
+def save_data_to_file(data, filename):
+    with open(filename, 'w') as file:
+        json.dump(data, file, indent=4)
+    print(f'Data saved to {filename}')
+
 if __name__ == '__main__':
-    scrape_data(url, metric_aliases)
-
-
-
+    scraped_data = scrape_data(url, metric_aliases)
+    save_data_to_file(scraped_data, 'scrape_tests2.json')

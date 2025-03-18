@@ -1,0 +1,71 @@
+{
+    "Fiscal Year": {
+        "Fiscal Year Ends": "12/31/2024",
+        "Most Recent Quarter  (mrq)": "12/31/2024"
+    },
+    "Profitability": {
+        "Profit Margin": "7.26%",
+        "Operating Margin  (ttm)": "6.16%"
+    },
+    "Management Effectiveness": {
+        "Return on Assets  (ttm)": "4.19%",
+        "Return on Equity  (ttm)": "10.42%"
+    },
+    "Income Statement": {
+        "Revenue  (ttm)": "97.69B",
+        "Revenue Per Share  (ttm)": "30.56",
+        "Quarterly Revenue Growth  (yoy)": "2.10%",
+        "Gross Profit  (ttm)": "17.45B",
+        "EBITDA": "13.03B",
+        "Net Income Avi to Common  (ttm)": "7.13B",
+        "Diluted EPS  (ttm)": "2.05",
+        "Quarterly Earnings Growth  (yoy)": "-70.80%"
+    },
+    "Balance Sheet": {
+        "Total Cash  (mrq)": "36.56B",
+        "Total Cash Per Share  (mrq)": "11.37",
+        "Total Debt  (mrq)": "13.62B",
+        "Total Debt/Equity  (mrq)": "18.49%",
+        "Current Ratio  (mrq)": "2.03",
+        "Book Value Per Share  (mrq)": "22.67"
+    },
+    "Cash Flow Statement": {
+        "Operating Cash Flow  (ttm)": "14.92B",
+        "Levered Free Cash Flow  (ttm)": "-826.88M"
+    },
+    "Stock Price History": {
+        "Beta (5Y Monthly)": "2.51",
+        "52 Week Change 3": "38.93%",
+        "S&P 500 52-Week Change 3": "9.59%",
+        "52 Week High 3": "488.54",
+        "52 Week Low 3": "138.80",
+        "50-Day Moving Average 3": "348.30",
+        "200-Day Moving Average 3": "282.99"
+    },
+    "Share Statistics": {
+        "Avg Vol (3 month) 3": "88.73M",
+        "Avg Vol (10 day) 3": "125.42M",
+        "Shares Outstanding 5": "3.22B",
+        "Implied Shares Outstanding 6": "3.22B",
+        "Float 8": "2.8B",
+        "% Held by Insiders 1": "12.89%",
+        "% Held by Institutions 1": "49.31%",
+        "Shares Short (2/28/2025) 4": "67.13M",
+        "Short Ratio (2/28/2025) 4": "0.82",
+        "Short % of Float (2/28/2025) 4": "2.39%",
+        "Short % of Shares Outstanding (2/28/2025) 4": "2.09%",
+        "Shares Short (prior month 1/31/2025) 4": "59.61M"
+    },
+    "Dividends & Splits": {
+        "Forward Annual Dividend Rate 4": "--",
+        "Forward Annual Dividend Yield 4": "--",
+        "Trailing Annual Dividend Rate 3": "0.00",
+        "Trailing Annual Dividend Yield 3": "0.00%",
+        "5 Year Average Dividend Yield 4": "--",
+        "Payout Ratio 4": "0.00%",
+        "Dividend Date 3": "--",
+        "Ex-Dividend Date 4": "--",
+        "Last Split Factor 2": "3:1",
+        "Last Split Date 3": "8/25/2022"
+    }
+}

@@ -333,7 +333,7 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
     st.write(pd.DataFrame(table_data, columns=table_columns))
     
 
-## GET SP 500 STOCK DATA ## FIXED WITH IMPORT
+## GET SP 500 STOCK DATA ## FIXED WITH PANDAS
 
 def get_sp_tickers():
     # Wikipedia URL for S&P 500 companies
