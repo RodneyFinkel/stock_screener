@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
 import json
-import pandas as pd
 from pandas_solution import get_sp500_companies
 
 url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
