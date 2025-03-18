@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from pprint import pprint
-import yfinance as yf
 import json
 
 url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
@@ -51,16 +50,9 @@ def scrape_data(url, metric_aliases):
     # pprint(soup)
     data = {}
     
-    # Find all sections with the specified data-testidqsp
+    # Find all sections with the specified data-testi attribute
     sections = soup.find_all('section', class_='card small tw-p-0 yf-ispmdb sticky noBackGround')
-    
     for section in sections:
-        title_tag = section.find('h3', class_='title font-condensed yf-ispmdb clip')
-        if not title_tag:
-            continue
-        title = title_tag.text.strip()
-        
-        data[title] = {}
         rows = section.find_all('tr', class_='row yf-vaowmx')
         
         for row in rows:
