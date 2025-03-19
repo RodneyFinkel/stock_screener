@@ -36,7 +36,7 @@ class Stock:
         # Metrics
         # Metric aliases pairs
         self.metric_aliases = {
-            'Market Cap': 'market_cap',
+            'Market Cap (intraday)': 'market_cap',
             'Beta (5Y Monthly)': 'beta',
             '52 Week High 3': '52_week_high',
             '52 Week Low 3': '52_week_low',
@@ -56,7 +56,7 @@ class Stock:
             'Return on Equity  (ttm)': 'return_on_equity',
             'Revenue  (ttm)': 'revenue',
             'Revenue Per Share  (ttm)': 'revenue_per_share',
-            #'Gross Profit  (ttm)': 'gross_profit',
+            'Gross Profit  (ttm)': 'gross_profit',
             'EBITDA': 'ebitda',
             'Net Income Avi to Common  (ttm)': 'net_income',
             'Diluted EPS  (ttm)': 'eps',
@@ -178,7 +178,7 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
 #     print('scrape_data function exit')
 #     return data
 
-# Scrape Statisitics fix
+# Scrape Statistics fix
 def scrape_data(url, metric_aliases):
     print('initialising scrape_data')
     page = requests.get(url, headers=get_headers())

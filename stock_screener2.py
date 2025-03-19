@@ -80,7 +80,7 @@ class StockScreener:
                   
         return predicted_stocks
     
-    # Create web app for stock screener 
+    # Create Streamlit web app for stock screener 
     def create_app(self):
         
         st.title(':blue[S&P500 Stock Screener with NN based Predictive Model]')
@@ -336,27 +336,17 @@ def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator
 ## GET SP 500 STOCK DATA ## FIXED WITH PANDAS
 
 def get_sp_tickers():
-    # Wikipedia URL for S&P 500 companies
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-
-    # Get the webpage content
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-
-    # Find the correct table by ID
     table = soup.find('table', {'id': 'constituents'})
 
     if not table:
         print("Table not found")
         return None
 
-    # Read table into pandas DataFrame
     df = pd.read_html(str(table))[0]
-
-    # Rename columns to match desired naming
     df.rename(columns={'Symbol': 'ticker', 'Security': 'company', 'GICS Sub-Industry': 'sector'}, inplace=True)
-
-    # Select only relevant columns: 'ticker', 'company', 'sector'
     df = df[['ticker', 'company', 'sector']]
 
     # Convert DataFrame to list of dictionaries
