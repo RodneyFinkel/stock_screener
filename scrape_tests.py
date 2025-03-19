@@ -6,27 +6,17 @@ import pandas as pd
 
 
 def get_sp_tickers():  
-    # Wikipedia URL for S&P 500 companies
     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-
-    # Get the webpage content
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-
-    # Find the correct table by ID
     table = soup.find('table', {'id': 'constituents'})
 
     if not table:
         print("Table not found")
         return None
 
-    # Read table into pandas DataFrame
     df = pd.read_html(str(table))[0]
-
-    # Rename columns to match desired naming
     df.rename(columns={'Symbol': 'ticker', 'Security': 'company', 'GICS Sub-Industry': 'sector'}, inplace=True)
-
-    # Select only relevant columns: 'ticker', 'company', 'sector'
     df = df[['ticker', 'company', 'sector']]
 
     # Convert DataFrame to list of dictionaries
@@ -34,31 +24,7 @@ def get_sp_tickers():
 
     return sp500
     
-    # Get sp500 ticker and sector
-#     url = 'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies'
-#     response = requests.get(url)
-#     soup = BeautifulSoup(response.content, 'html.parser')
-#     table = soup.find('table', {'class': 'wikitable sortable'})
-#     rows = table.find_all('tr')[1:] # skip the header row
     
-#     sp500 = [] 
-#     for row in rows:
-#             cells = row.find_all('td')
-#             if len(cells) == 0:
-#                     continue
-            
-#             ticker = cells[0].text.strip()
-#             company = cells[1].text.strip()
-#             sector = cells[2].text.strip()
-#                 # cells = row.find_all('td')
-#                 # ticker = cells[0].text.strip()
-#                 # company = cells[1].text.strip()
-#                 # sector = cells[3].text.strip()
-#             sp500.append({'ticker': ticker, 'company': company, 'sector': sector})  
-         
-#     return sp500
-
-
 def get_sp500_stocks(sp500):
     sp500_stocks = []
     for stock in sp500:
@@ -79,20 +45,6 @@ def get_sp500_stocks(sp500):
 
 def get_headers():
         return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
-
-
-def get_stock_price(ticker):
-        try:
-                url = f'https://finance.yahoo.com/quote/{ticker}'
-                response = requests.get(url, headers=get_headers())
-                soup = BeautifulSoup(response.content, 'html.parser')
-                data = soup.find('fin-streamer', {'data-symbol': ticker})
-                price = float(data['value'])
-                return price
-        except:
-                print(f'Price not available for {ticker}')
-                price = 0.0  
-                return price
         
 def get_stock_price2(ticker):
     stock = yf.Ticker(ticker)

@@ -160,23 +160,6 @@ def filter_technical_indicators(stock, indicator_name, operator, value):
     else:
         raise ValueError(f'Invalid operator: {operator}')
     
-# def scrape_data(url, metric_aliases):
-#     print('initialising scrape_data')
-#     page = requests.get(url, headers=get_headers())
-#     soup = BeautifulSoup(page.content, 'html.parser')
-#     data = {}
-    
-#     sections = soup.find_all('section', {'data-testid':'qsp-statistics'})
-#     for section in sections:
-#         rows = section.find_all('tr')
-#         for row in rows:
-#             cols = row.find_all('td')
-#             if len(cols) == 2:
-#                 metric = cols[0].text.strip()
-#                 if metric in metric_aliases:
-#                     data[metric_aliases[metric]] = cols[1].text.strip()
-#     print('scrape_data function exit')
-#     return data
 
 # Scrape Statistics fix
 def scrape_data(url, metric_aliases):
