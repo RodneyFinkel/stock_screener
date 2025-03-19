@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from pprint import pprint
 import json
 from pandas_solution import get_sp500_companies
+from yahoo_scraper import scrape_valuation_section
 
 url = f"https://finance.yahoo.com/quote/TSLA/key-statistics?pTSLA"
 metric_aliases = {

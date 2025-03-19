@@ -7,19 +7,13 @@ from pprint import pprint
 stock_symbol = "TSLA"
 url = f"https://finance.yahoo.com/quote/{stock_symbol}/key-statistics?p={stock_symbol}"
 
-# Send a request to fetch the page content
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-}
-response = requests.get(url, headers=headers)
+def get_headers():
+    return {"user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.122 Safari/537.36"}
 
-# Parse the page content with BeautifulSoup
-soup = BeautifulSoup(response.text, "html.parser")
-
-# data_testids = ['qsp-statistics', 'card-container']
 # Locate the 'Valuation Measures' section
-def scrape_valuation_section(soup):
-    
+def scrape_valuation_section(url):
+    response = requests.get(url, headers=get_headers())
+    soup = BeautifulSoup(response.text, "html.parser")
     valuation_section = soup.find("section", {"data-testid": "qsp-statistics"})
     if valuation_section:
         table = valuation_section.find("table")
@@ -51,5 +45,5 @@ def scrape_valuation_section(soup):
     
 
 if __name__ == "__main__":
-    valuation_data = scrape_valuation_section(soup)
+    valuation_data = scrape_valuation_section(url)
     pprint(valuation_data)
