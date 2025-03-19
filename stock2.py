@@ -184,36 +184,55 @@ def scrape_data(url, metric_aliases):
     page = requests.get(url, headers=get_headers())
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    data_pre = {'financial_highlights': {}, 'trading_information': {}, 'valuation_measures': {}}
+    # data_pre = {'financial_highlights': {}, 'trading_information': {}, 'valuation_measures': {}}
     
-    # Scrape Financial Highlights Section
-    financial_highlights_section = soup.find('section', class_='yf-14j5zka')
-    financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
+    # # Scrape Financial Highlights Section
+    # financial_highlights_section = soup.find('section', class_='yf-14j5zka')
+    # financial_cards = financial_highlights_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
     
-    for card in financial_cards:
-        title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
-        table_rows = card.find_all('tr')
-        financial_data = {}
-        for row in table_rows:
-            label = row.find('td', class_='label yf-vaowmx').text.strip()
-            value = row.find('td', class_='value yf-vaowmx').text.strip()
-            financial_data[label] = value
-        data_pre['financial_highlights'][title] = financial_data
+    # for card in financial_cards:
+    #     title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
+    #     table_rows = card.find_all('tr')
+    #     financial_data = {}
+    #     for row in table_rows:
+    #         label = row.find('td', class_='label yf-vaowmx').text.strip()
+    #         value = row.find('td', class_='value yf-vaowmx').text.strip()
+    #         financial_data[label] = value
+    #     data_pre['financial_highlights'][title] = financial_data
 
-    # Scrape Trading Information Section
-    trading_info_section = soup.find_all('section', class_='yf-14j5zka')[1]  # Get the second section with the same class
-    trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
+    # # Scrape Trading Information Section
+    # trading_info_section = soup.find_all('section', class_='yf-14j5zka')[1]  # Get the second section with the same class
+    # trading_cards = trading_info_section.find_all('section', class_='card small tw-p-0 yf-13ievhf sticky')
 
-    for card in trading_cards:
-        title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
-        table_rows = card.find_all('tr')
-        trading_data = {}
-        for row in table_rows:
-            label = row.find('td', class_='label yf-vaowmx').text.strip()
-            value = row.find('td', class_='value yf-vaowmx').text.strip()
-            trading_data[label] = value
-        data_pre['trading_information'][title] = trading_data
+    # for card in trading_cards:
+    #     title = card.find('h3', class_='title font-condensed yf-13ievhf clip').text.strip()
+    #     table_rows = card.find_all('tr')
+    #     trading_data = {}
+    #     for row in table_rows:
+    #         label = row.find('td', class_='label yf-vaowmx').text.strip()
+    #         value = row.find('td', class_='value yf-vaowmx').text.strip()
+    #         trading_data[label] = value
+    #     data_pre['trading_information'][title] = trading_data
     
+    
+    data_pre = {}
+    
+    # Find all sections with the specified data-testi attribute
+    sections = soup.find_all('section', class_='card small tw-p-0 yf-ispmdb sticky noBackGround')
+    for section in sections:
+        rows = section.find_all('tr', class_='row yf-vaowmx')
+        
+        for row in rows:
+            label_tag = row.find('td', class_='label yf-vaowmx')
+            value_tag = row.find('td', class_='value yf-vaowmx')
+            
+            if label_tag and value_tag:
+                label = label_tag.text.strip()
+                value = value_tag.text.strip()
+                if label in metric_aliases:
+                    alias = metric_aliases[label]
+                    data[alias] = value    
+
     # Scrape Valuation Measures Section
     valuation_section = soup.find('section', {'data-testid': 'qsp-statistics'})
     if valuation_section:
