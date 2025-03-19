@@ -172,7 +172,8 @@ def create_cnn_model(train_data):
         tf.keras.layers.Dense(128, activation='relu'),
         tf.keras.layers.Dense(1, activation='sigmoid')
     ])
-    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    # changed to save the model in a variable
+    cnn_model = model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return cnn_model 
     
 def display_filtered_stocks(filtered_stocks, selected_metric, selected_indicator, models=None):
