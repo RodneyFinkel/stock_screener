@@ -13,7 +13,6 @@ def get_sp500_companies():
         return None
 
     df = pd.read_html(str(table))[0]
-    # Select only relevant columns: 'Symbol', 'Security', 'GICS Sector'
     df = df[['Symbol', 'Security', 'GICS Sector']]
 
     return df

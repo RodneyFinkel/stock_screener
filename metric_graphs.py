@@ -48,7 +48,7 @@ def get_stock_price2(ticker):
  
 def get_historical(ticker):
     stock = yf.Ticker(ticker)
-    history = stock.history(start='2019-01-01', end='2024-05-04') 
+    history = stock.history(start='2019-01-01', end='2025-02-02') 
     return history
 
 

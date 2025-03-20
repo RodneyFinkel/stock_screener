@@ -1,7 +1,7 @@
 Ticker,Company,Sector,Industry,Country,Market Cap,P/E,Price,Change,Volume
-ARW,Arrow Electronics Inc,Technology,Electronics & Computer Distribution,USA,5600000000.0,14.76,107.43,0.017,425519.0
-EGY,"VAALCO Energy, Inc",Energy,Oil & Gas E&P,USA,428780000.0,7.3,4.08,0.0049,985687.0
-MTW,"Manitowoc Co., Inc",Industrials,Farm & Heavy Construction Machinery,USA,337990000.0,6.15,9.62,0.0063,198274.0
-MUR,Murphy Oil Corp,Energy,Oil & Gas E&P,USA,3810000000.0,9.71,26.1,-0.021,2152794.0
-NE,Noble Corp Plc,Energy,Oil & Gas Drilling,USA,3910000000.0,8.22,24.56,0.015700000000000002,1611683.0
-VLY,Valley National Bancorp,Financial,Banks - Regional,USA,4980000000.0,12.85,8.88,0.0045000000000000005,5991787.0
+ARW,Arrow Electronics Inc,Technology,Electronics & Computer Distribution,USA,5530000000.0,14.56,105.94,-0.0275,377151.0
+EGY,"VAALCO Energy, Inc",Energy,Oil & Gas E&P,USA,408740000.0,7.05,3.94,-0.0223,781642.0
+MTW,"Manitowoc Co., Inc",Industrials,Farm & Heavy Construction Machinery,USA,340450000.0,6.2,9.69,-0.001,180028.0
+MUR,Murphy Oil Corp,Energy,Oil & Gas E&P,USA,3910000000.0,9.98,26.83,-0.01,2308880.0
+NE,Noble Corp Plc,Energy,Oil & Gas Drilling,USA,3970000000.0,8.35,24.95,0.0101,1704861.0
+VLY,Valley National Bancorp,Financial,Banks - Regional,USA,4940000000.0,12.75,8.81,-0.0134,5768691.0

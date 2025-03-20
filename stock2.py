@@ -33,7 +33,6 @@ class Stock:
         self.labels = pd.DataFrame()
         self.prediction = 0.0 
         print('labels set')      
-        # Metrics
         # Metric aliases pairs
         self.metric_aliases = {
             'Market Cap (intraday)': 'market_cap',
